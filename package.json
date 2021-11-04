@@ -1,0 +1,89 @@
+{
+  "name": "@coingrig/core",
+  "title": "The Coingrig Core library",
+  "description": "The Coingrig Core library handling the crypto wallet interactions",
+  "author": "Coingrig",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
+    "docs": "jsdoc2md \"./src/**/*.ts\" --configure ./jsdoc2md.json --template README.hbs > ./README.md"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "module": "dist/core.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/core.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/core.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
+    "@size-limit/preset-small-lib": "5.0.3",
+    "@types/bitcore-lib": "0.15.3",
+    "husky": "7.0.2",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^7.1.0",
+    "size-limit": "5.0.3",
+    "tsdx": "0.14.1",
+    "tslib": "2.3.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "bignumber.js": "9.0.1",
+    "bip32": "2.0.6",
+    "bip39": "3.0.4",
+    "bitcoinjs-lib": "5.2.0",
+    "bitcore-lib": "8.25.10",
+    "coinselect": "3.1.12",
+    "decimal.js": "10.3.1",
+    "dotenv": "10.0.0",
+    "ethereumjs-wallet": "1.0.1",
+    "hdkey": "2.0.1",
+    "web3": "1.5.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "testTimeout": 30000
+  }
+}

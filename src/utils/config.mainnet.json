@@ -1,0 +1,65 @@
+{
+  "TESTNET": false,
+  "DEFAULT_DERIVATION_KEY": 0,
+  "CHAIN_ENDPOINTS": {
+    "BTC": {
+      "balance": [
+        {
+          "driver": "BTC_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/btc/address/"
+          }
+        }
+      ],
+      "fee": [
+        {
+          "driver": "BTC_Driver",
+          "config": {
+            "endpoint": "https://api.blockchain.info/mempool/fees",
+            "utxo_endpoint": "https://api.coingrig.com/btc/utxo/"
+          }
+        }
+      ],
+      "transaction": [
+        {
+          "driver": "BTC_Driver",
+          "config": {
+            "get_endpoint": "https://api.coingrig.com/btc/tx/",
+            "send_endpoint": "https://api.coingrig.com/btc/sendtx/",
+            "TESTNET": false
+          }
+        }
+      ]
+    },
+    "ETH": {
+      "balance": [
+        {
+          "driver": "ETH_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/eth/address/"
+          }
+        }
+      ],
+      "fee": [
+        {
+          "driver": "ETH_Driver",
+          "config": {
+            "endpoint": "https://ethgasstation.info/json/ethgasAPI.json",            
+            "proposal_endpoint": "https://api.coingrig.com/web3eth/"
+          }
+        }
+      ],
+      "transaction": [
+        {
+          "driver": "ETH_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/web3eth/"           
+          }
+        }
+      ]
+    }
+  },
+  "SERVICES_ENDPOINTS": {
+    "CoinGecko": "https://api.coingecko.com/api/v3/"
+  }
+}

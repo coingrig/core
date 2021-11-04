@@ -1,0 +1,116 @@
+import { IFeeMap, FEE_TYPES } from '../IFee';
+import { GenericDriver } from '../GenericDriver';
+import { BitcoinFee } from "../types/BitcoinFee";
+import axios from 'axios';
+import { Currency } from '../../currencies';
+
+import { UA } from "../../constants";
+import { btc_to_satoshi, satoshi_to_btc } from '../../currencyFunctions';
+
+let coinSelect = require('coinselect')
+
+export class BTC_Driver extends GenericDriver {
+  currency = Currency.BTC;
+  getUTXOEndpoint() {
+    const endpoint = this.config.utxo_endpoint;
+    if (endpoint) {
+      return endpoint;
+    }
+    throw new Error("BTC UTXO endpoint is required in config[other] section");
+  }
+  getUTXO = async (address: string) => {
+    const url = this.getUTXOEndpoint() + address + '?confirmed=false';
+    const param: object = {
+      method: 'get',
+      url: url,
+      headers: {
+        'User-Agent': UA,
+      },
+    };
+    const response = await axios(param);
+    return response.data;
+  }
+  getTxSendProposals = async (address: string, _privKey: string, _destination: string, _valueToSend: number, _currency = this.currency) => {
+   const config: object = {
+      method: 'get',
+      url: this.getFeeEndpoint(),
+    };
+    const response = await axios(config);
+    const data = response.data;
+    // {
+    // "limits": {
+    //   "min": 2,
+    //   "max": 16
+    // },
+    // "regular": 4,
+    // "priority": 11
+    // }
+    // TODO: Check valid reply
+
+    let fromAddress = address;
+    let utxosQueryResults = await this.getUTXO(fromAddress);
+    let utxos: any[] = [];
+
+    utxosQueryResults.forEach((t: any) => {
+      utxos.push({
+        txid: t.txid,
+        vout: t.vout,
+        value: parseInt(t.value, 10),
+        amount: satoshi_to_btc(t.value)
+      })
+    });
+    let targets = [{
+      address: _destination,
+      value:  btc_to_satoshi(_valueToSend)
+    }]
+    let fees = <IFeeMap>{}
+    //
+    let feeSet = [FEE_TYPES.REGULAR, FEE_TYPES.PRIORITY];
+    let inputs: any = [];
+    let outputs: any = [];
+    let fee = 0;
+    let result: any = {};
+    let adjustedOutputs: any = [];
+    let adjustedInputs: any = [];
+        
+    let privateKey = _privKey;
+
+    for (let i = 0; i < feeSet.length; i++) {
+      const feeType = feeSet[i];
+      result = coinSelect(utxos.slice(), targets.slice(), data[feeType]);      
+      inputs = result.inputs;
+      outputs = result.outputs;
+      if (!inputs || !outputs) {
+        throw new Error('Can not compute fees for the passed value');
+      }
+      fee = result.fee;
+      adjustedOutputs = [];
+      adjustedInputs = [];
+      for (let z = 0; z < inputs.length; z++) {
+        const o = inputs[z];
+        adjustedInputs.push({
+          txHash: o.txid,
+          index: o.vout,
+          privateKey: privateKey,
+          value: o.value, //SATOSHI
+          amount: o.amount //BTC
+        });
+      }
+      // Convert from satoshi back to BTC [];
+      for (let z = 0; z < outputs.length; z++) {
+        const o = outputs[z];
+        adjustedOutputs.push(Object.assign({}, o, {
+          address: !o.address ? fromAddress : o.address,
+          value: o.value, //SATOSHI
+          amount: satoshi_to_btc(o.value) //BTC
+        }));
+      }
+      fees[feeType] = new BitcoinFee(fee, {
+        fromUTXO: adjustedInputs,
+        to: adjustedOutputs,
+      });
+    }
+    //    
+    return <IFeeMap>fees;
+  }
+}
