@@ -1,8 +1,7 @@
 import { IWalletConfig, WalletFactory } from '../dist';
 import { WalletGenerator } from '../dist';
 import { Chains } from '../dist';
-import { MNEMONIC } from './fixtures';
-// ETH_ADDRESS_RECEIVER
+import { ETH_ADDRESS_RECEIVER, MNEMONIC } from './fixtures';
 
 let config: IWalletConfig = {
   symbol: 'CGTEST',
