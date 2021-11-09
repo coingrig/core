@@ -61,7 +61,7 @@ export class GenericWallet implements IWallet {
       // Try all drivers in case one of them fails
       const driverDescription: any = drivers[i];
       try {
-        var driver = new this.BALANCE_DRIVER_NAMESPACE[driverDescription.driver](driverDescription.config);
+        var driver = new this.BALANCE_DRIVER_NAMESPACE[driverDescription.driver](this.config, driverDescription.config);
         let balance = await driver.getBalance(this.getAddress());
         if (balance) {
           return balance;
@@ -83,12 +83,12 @@ export class GenericWallet implements IWallet {
       // Try all drivers in case one of them fails
       const driverDescription: any = drivers[i];
       try {
-        var driver = new this.FEES_DRIVER_NAMESPACE[driverDescription.driver](driverDescription.config);
+        var driver = new this.FEES_DRIVER_NAMESPACE[driverDescription.driver](this.config, driverDescription.config);
         if(typeof driver.getTxSendProposals !== 'function') {
           continue;
         }
         let fees = await driver.getTxSendProposals(
-          this.getAddress(), this.getPrivateKey(), destination, valueToSend
+          destination, valueToSend
         );
         if (fees) {
           return fees;
@@ -110,7 +110,7 @@ export class GenericWallet implements IWallet {
       // Try all drivers in case one of them fails
       const driverDescription: any = drivers[i];
       try {
-        var driver = new this.TRANSACTION_DRIVER_NAMESPACE[driverDescription.driver](driverDescription.config);
+        var driver = new this.TRANSACTION_DRIVER_NAMESPACE[driverDescription.driver](this.config, driverDescription.config);
         let tx = await driver.send(transactionProposal);
         return tx;
       } catch (e) {

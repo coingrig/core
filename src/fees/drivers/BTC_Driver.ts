@@ -2,7 +2,6 @@ import { IFeeMap, FEE_TYPES } from '../IFee';
 import { GenericDriver } from '../GenericDriver';
 import { BitcoinFee } from "../types/BitcoinFee";
 import axios from 'axios';
-import { Currency } from '../../currencies';
 
 import { UA } from "../../constants";
 import { btc_to_satoshi, satoshi_to_btc } from '../../currencyFunctions';
@@ -10,7 +9,6 @@ import { btc_to_satoshi, satoshi_to_btc } from '../../currencyFunctions';
 let coinSelect = require('coinselect')
 
 export class BTC_Driver extends GenericDriver {
-  currency = Currency.BTC;
   getUTXOEndpoint() {
     const endpoint = this.config.utxo_endpoint;
     if (endpoint) {
@@ -30,7 +28,11 @@ export class BTC_Driver extends GenericDriver {
     const response = await axios(param);
     return response.data;
   }
-  getTxSendProposals = async (address: string, _privKey: string, _destination: string, _valueToSend: number, _currency = this.currency) => {
+  getTxSendProposals = async (destination: string, valueToSend: number) => {
+   const fromAddress = this.assetConfig.walletAddress!;
+   const privKey = this.assetConfig.privKey;
+  //  const currency = this.assetConfig.symbol;
+
    const config: object = {
       method: 'get',
       url: this.getFeeEndpoint(),
@@ -47,7 +49,6 @@ export class BTC_Driver extends GenericDriver {
     // }
     // TODO: Check valid reply
 
-    let fromAddress = address;
     let utxosQueryResults = await this.getUTXO(fromAddress);
     let utxos: any[] = [];
 
@@ -60,8 +61,8 @@ export class BTC_Driver extends GenericDriver {
       })
     });
     let targets = [{
-      address: _destination,
-      value:  btc_to_satoshi(_valueToSend)
+      address: destination,
+      value:  btc_to_satoshi(valueToSend)
     }]
     let fees = <IFeeMap>{}
     //
@@ -73,7 +74,7 @@ export class BTC_Driver extends GenericDriver {
     let adjustedOutputs: any = [];
     let adjustedInputs: any = [];
         
-    let privateKey = _privKey;
+    let privateKey = privKey;
 
     for (let i = 0; i < feeSet.length; i++) {
       const feeType = feeSet[i];

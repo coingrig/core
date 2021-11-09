@@ -1,12 +1,15 @@
 import { IBalanceDriver } from './IBalance';
 import { GenericBalance } from './GenericBalance';
-import { Currency } from '../currencies';
+import { IWalletConfig } from '../wallets/IWalletConfig';
 
 export class GenericBalanceDriver implements IBalanceDriver {
-  currency = Currency.BTC.toString();
+  currency: string;
+  assetConfig: IWalletConfig;
   config: any;
-  constructor(config?: any) {
+  constructor(assetConfig: IWalletConfig, config?: any) {
     this.config = config;
+    this.assetConfig = assetConfig;
+    this.currency = assetConfig.symbol;
   }
   getBalance = async (_address: string) => {
     return new GenericBalance(this.currency, 0, 0);

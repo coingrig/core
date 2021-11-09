@@ -2,19 +2,17 @@ import { IFeeMap, FEE_TYPES } from '../IFee';
 import { GenericDriver } from '../GenericDriver';
 import { EthereumFee } from "../types/EthereumFee";
 import axios from 'axios';
-import { Currency } from '../../currencies'
 import { TransactionConfig } from 'web3-core';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import {
-  CONTRACT_ADDRESSES,
-  CONTRACT_DECIMALS,
   TRANSFER_METHOD_ABI,
 } from '../../constants';
 
 export class ETH_Driver extends GenericDriver {
-  currency = Currency.ETH;
-  getTxSendProposals = async (_address: string, _privKey: string, destination: string, valueToSend: number, currency = this.currency) => {
+  getTxSendProposals = async (destination: string, valueToSend: number) => {
+    const currency = this.assetConfig.symbol!;
+    const privateKey = this.assetConfig.privKey!;
     const config: object = {
       method: 'get',
       url: this.getFeeEndpoint(),
@@ -34,9 +32,6 @@ export class ETH_Driver extends GenericDriver {
     // "fastWait": 0.5,
     // "fastestWait": 0.4,
     // }
-
-    // TODO: Check valid reply
-    let privateKey = _privKey;
 
     let fees = <IFeeMap>{}
     
@@ -107,12 +102,12 @@ export class ETH_Driver extends GenericDriver {
       const contract = new client.eth.Contract(
         // @ts-ignore
         [TRANSFER_METHOD_ABI],
-        CONTRACT_ADDRESSES[currency]
+        this.assetConfig.contract
       );
-      const digits = new BigNumber(10).pow(CONTRACT_DECIMALS[currency]);
+      const digits = new BigNumber(10).pow(this.assetConfig.decimals);
       tx = {
         from: 0,
-        to: CONTRACT_ADDRESSES[currency],
+        to: this.assetConfig.contract!,
         data: contract.methods
           .transfer(
             to.trim(),

@@ -24,8 +24,8 @@ export interface IConfig {
   SERVICES_ENDPOINTS: SERVICES_ENDPOINTS_MAP,
 }
 
-const TESTNET = String(process.env.TESTNET) === 'true';
-console.log('TESTNET: ', process.env.TESTNET, TESTNET, typeof process.env.TESTNET, typeof TESTNET);
+const TESTNET = true; // String(process.env.TESTNET) === 'true';
+// console.log('TESTNET: ', process.env.TESTNET, TESTNET, typeof process.env.TESTNET, typeof TESTNET);
 
 import * as MAINNET_CONFIG_DATA from './config.mainnet.json';
 import * as TESTNET_CONFIG_DATA from './config.testnet.json';

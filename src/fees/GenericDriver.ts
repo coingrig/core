@@ -1,13 +1,16 @@
 import { IFeeDriver } from './IFee';
-import { Currency } from '../currencies';
+import { IWalletConfig } from '..';
 
 export class GenericDriver implements IFeeDriver {
-  currency = Currency.ETH;
+  assetConfig: IWalletConfig;
+  currency: string;
   config: any;
-  constructor(config?: any) {
+  constructor(assetConfig: any, config?: any) {
     this.config = config;
+    this.assetConfig = assetConfig;
+    this.currency = assetConfig.symbol;
   }
-  getTxSendProposals = async (_address: string, _privKey: string, _destination: string, _valueToSend: number, _currency = this.currency) => {
+  getTxSendProposals = async (_destination: string, _valueToSend: number) => {
     return {}
   }
   getFeeEndpoint() {

@@ -1,8 +1,30 @@
-import { Fees } from '../dist';
+import { Fees, IWalletConfig } from '../dist';
 import { CONFIG } from '../dist';
 import { BitcoinFee, EthereumFee } from '../dist/fees';
 import { Generators } from '../dist';
 import { BTC_ADDRESS_RECEIVER, BTC_ADDRESS_SENDER, ETH_ADDRESS_RECEIVER, ETH_ADDRESS_SENDER, MNEMONIC } from './fixtures';
+
+const BTC_DESCRIPTOR: IWalletConfig = {
+  symbol: 'BTC',
+  name: 'Bitcoin',
+  chain: 'BTC',
+  type: 'coin',
+  decimals: 8,
+  contract: null,
+  walletAddress: null,
+  privKey: null
+}
+
+const ETH_DESCRIPTOR: IWalletConfig = {
+  symbol: 'ETH',
+  name: 'Ethereum',
+  chain: 'BTC',
+  type: 'ETH',
+  decimals: 18,
+  contract: null,
+  walletAddress: null,
+  privKey: null
+}
 
 describe('Fees', () => {
   it('can_use_btc_driver', async () => {
@@ -12,8 +34,12 @@ describe('Fees', () => {
 
     let from = BTC_ADDRESS_SENDER;
     let to = BTC_ADDRESS_RECEIVER;
-    let d = new Fees.BTC_Driver(CONFIG.CHAIN_ENDPOINTS.BTC.fee[0].config);
-    let proposals = await d.getTxSendProposals(from, privKey, to, 0.00001);
+    let config = Object.assign({}, BTC_DESCRIPTOR, {
+      privKey: privKey,
+      walletAddress: from
+    })
+    let d = new Fees.BTC_Driver(config, CONFIG.CHAIN_ENDPOINTS.BTC.fee[0].config);
+    let proposals = await d.getTxSendProposals(to, 0.00001);
     expect(typeof proposals).toBe('object');
     ['regular', 'priority'].forEach(element => {
       expect(proposals).toHaveProperty(element);
@@ -39,9 +65,12 @@ describe('Fees', () => {
     let to = ETH_ADDRESS_RECEIVER;
 
     let privKey = await Generators.EthereumGenerator.generatePrivateKeyFromMnemonic(mnemonic, 0);
-
-    let d = new Fees.ETH_Driver(CONFIG.CHAIN_ENDPOINTS.ETH.fee[0].config);
-    let proposals = await d.getTxSendProposals(from, privKey, to, 0.00001);
+    let config = Object.assign({}, ETH_DESCRIPTOR, {
+      privKey: privKey,
+      walletAddress: from
+    })
+    let d = new Fees.ETH_Driver(config, CONFIG.CHAIN_ENDPOINTS.ETH.fee[0].config);
+    let proposals = await d.getTxSendProposals(to, 0.00001);
     expect(typeof proposals).toBe('object');
     ['regular', 'priority'].forEach(element => {
       expect(proposals).toHaveProperty(element);

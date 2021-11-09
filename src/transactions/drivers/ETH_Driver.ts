@@ -1,10 +1,8 @@
-import { Currency } from '../../currencies';
 import Web3 from 'web3';
 import { GenericTxProposal } from '../../fees/GenericTxProposal';
 import { GenericTransactionDriver } from '../GenericTransactionDriver';
 
 export class ETH_Driver extends GenericTransactionDriver {
-  currency = Currency.ETH;
 
   send = async (transaction: GenericTxProposal): Promise<any> => {
     const provider = new Web3.providers.HttpProvider(this.getEndpoint());

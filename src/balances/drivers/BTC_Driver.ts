@@ -1,13 +1,11 @@
 import { GenericBalanceDriver } from '../GenericBalanceDriver';
 import { GenericBalance } from '../GenericBalance';
-import { Currency } from '../../currencies';
 import axios from 'axios';
 import { UA } from '../../constants';
 import { satoshi_to_btc } from '../../currencyFunctions';
 import BigNumber from 'bignumber.js';
 
 export class BTC_Driver extends GenericBalanceDriver {
-  currency = Currency.BTC;
   config: any;  
   getBalance = async (address: string) => {
     const url = this.getBalanceEndpoint() + address + '?details=basic';

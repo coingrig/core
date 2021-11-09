@@ -1,11 +1,14 @@
-import { Currency } from '../currencies';
+import { IWalletConfig } from '..';
 import { GenericTxProposal } from '../fees/GenericTxProposal';
 
 export class GenericTransactionDriver {
-  currency = Currency.BTC;
+  currency: string;
+  assetConfig: IWalletConfig;
   config: any;
-  constructor(config?: any) {
+  constructor(assetConfig: any, config?: any) {
     this.config = config;
+    this.assetConfig = assetConfig;
+    this.currency = assetConfig.symbol;
   }
   send = async (_transaction: GenericTxProposal) : Promise<any> => {    
     return null;
