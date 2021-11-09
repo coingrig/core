@@ -40,7 +40,7 @@ export class ETH_Driver extends GenericDriver {
       amount: valueToSend,
       currency: currency,
       fee: {
-        gasLimit: 40000,
+        gasLimit: (currency === 'ETH') ? 40000 : null,
         gasPrice: (data.average / 10).toString(),
       },
       fromPrivateKey: privateKey
@@ -55,7 +55,7 @@ export class ETH_Driver extends GenericDriver {
       amount: valueToSend,
       currency: currency,
       fee: {
-        gasLimit: 40000,
+        gasLimit: (currency === 'ETH') ? 40000 : null,
         gasPrice: (data.fast / 10).toString(),
       },
       fromPrivateKey: privateKey
