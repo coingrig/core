@@ -10,7 +10,8 @@ import { GenericBalance } from '../balances/GenericBalance';
 export class GenericWallet implements IWallet {
   config: IWalletConfig;
   address: any = null;
-
+  currency: string;
+  
   TRANSACTION_DRIVER_NAMESPACE: {
     [key: string]: any
   } = {}
@@ -27,8 +28,15 @@ export class GenericWallet implements IWallet {
   constructor(config: IWalletConfig) {
     this.address = config.walletAddress;
     this.config = config;
+    this.currency = this.config.symbol;
   }
   //
+  getDecimals = async (): Promise<number | null> => {
+    if (this.config.decimals === null) {
+      throw new Error('Wallet decimals not set!')
+    }
+    return this.config.decimals
+  }
   getAddress = () => {
     if (!this.address) {
       throw new Error('Wallet address not set!')

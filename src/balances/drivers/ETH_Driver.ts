@@ -26,6 +26,9 @@ export class ETH_Driver extends GenericBalanceDriver {
       const unconfirmedBalance: number = Number(new BigNumber(response.data.unconfirmedBalance));
       return new GenericBalance(this.currency, Number(weiToETH(confirmedBalance.toString())), Number(weiToETH(unconfirmedBalance.toString())));
     } else {
+      if (this.assetConfig.decimals === null) {
+        throw new Error('Wallet decimals not set, can not retrieve balance without decimals!')
+      }
       const provider = new Web3.providers.HttpProvider(this.getTokenBalanceEndpoint());
       const client = new Web3(provider);
 
@@ -38,8 +41,8 @@ export class ETH_Driver extends GenericBalanceDriver {
         {from: address}
       );
       
-      const format = client.utils.fromWei(result);
-      const value = Number(new BigNumber(format));
+      const format = result;
+      const value = Number((new BigNumber(format)).div(10 ** this.assetConfig.decimals!));
         
       return new GenericBalance(this.currency, value, 0);
     }

@@ -8,7 +8,7 @@ let config: IWalletConfig = {
   name: 'Ethereum',
   chain: 'ETH', 
   type: 'coin',
-  decimals: 8,
+  decimals: 18,
   contract: null,
   options: {
     testnet: true,

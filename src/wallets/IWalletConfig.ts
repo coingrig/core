@@ -7,7 +7,7 @@
  * @property {string} name Display name
  * @property {string} chain Blockchain type
  * @property {string} type 
- * @property {number} decimals
+ * @property {null|number} decimals
  * @property {null|string} contract Contract address if it is a token
  * @property {*} options
  * @property {null|string} walletAddress The wallet address for this chain
@@ -18,7 +18,7 @@ export interface IWalletConfig {
   name: string;
   chain: string;
   type: string;
-  decimals: number;
+  decimals: null | number;
   contract: null | string;
   options?: {
     testnet?: boolean;

@@ -1,4 +1,3 @@
-import { Currency } from '../../currencies';
 import { GenericWallet } from '../GenericWallet';
 
 import {BTC_Driver} from '../../fees/drivers/BTC_Driver';
@@ -7,7 +6,6 @@ import {BTC_Driver as BTC_Balance_Driver} from '../../balances/drivers/BTC_Drive
 
 
 export class BitcoinWallet extends GenericWallet {
-  currency = Currency.BTC;
   TRANSACTION_DRIVER_NAMESPACE: {
     [key: string]: any
   } = {
