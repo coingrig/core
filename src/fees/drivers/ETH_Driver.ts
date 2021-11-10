@@ -104,7 +104,7 @@ export class ETH_Driver extends GenericDriver {
         [TRANSFER_METHOD_ABI],
         this.assetConfig.contract
       );
-      const digits = new BigNumber(10).pow(this.assetConfig.decimals);
+      const digits = new BigNumber(10).pow(this.assetConfig.decimals!);
       tx = {
         from: 0,
         to: this.assetConfig.contract!,
