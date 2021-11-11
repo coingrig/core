@@ -61,6 +61,17 @@
     "tslib": "2.3.1",
     "typescript": "^4.4.2"
   },
+  "keywords": [
+    "crypto",
+    "bitcoin",
+    "wallet",
+    "typescript"
+  ],
+  "homepage": "https://coingrig.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coingrig/core.git"
+  },
   "dependencies": {
     "axios": "0.21.1",
     "bignumber.js": "9.0.1",
