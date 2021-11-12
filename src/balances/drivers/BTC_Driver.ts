@@ -6,7 +6,7 @@ import { satoshi_to_btc } from '../../currencyFunctions';
 import BigNumber from 'bignumber.js';
 
 export class BTC_Driver extends GenericBalanceDriver {
-  config: any;  
+  config: any;
   getBalance = async (address: string) => {
     const url = this.getBalanceEndpoint() + address + '?details=basic';
     const param: object = {
@@ -18,8 +18,16 @@ export class BTC_Driver extends GenericBalanceDriver {
     };
     const response = await axios(param);
     // TODO: Check valid reply
-    const confirmedBalance: number = Number(new BigNumber(response.data.balance));
-    const unconfirmedBalance: number = Number(new BigNumber(response.data.unconfirmedBalance));
-    return new GenericBalance(this.currency, satoshi_to_btc(confirmedBalance), satoshi_to_btc(unconfirmedBalance));
-  }
+    const confirmedBalance: number = Number(
+      new BigNumber(response.data.balance)
+    );
+    const unconfirmedBalance: number = Number(
+      new BigNumber(response.data.unconfirmedBalance)
+    );
+    return new GenericBalance(
+      this.currency,
+      satoshi_to_btc(confirmedBalance),
+      satoshi_to_btc(unconfirmedBalance)
+    );
+  };
 }

@@ -1,12 +1,12 @@
 import { IFeeMap, FEE_TYPES } from '../IFee';
 import { GenericDriver } from '../GenericDriver';
-import { BitcoinFee } from "../types/BitcoinFee";
+import { BitcoinFee } from '../types/BitcoinFee';
 import axios from 'axios';
 
-import { UA } from "../../constants";
+import { UA } from '../../constants';
 import { btc_to_satoshi, satoshi_to_btc } from '../../currencyFunctions';
 
-let coinSelect = require('coinselect')
+let coinSelect = require('coinselect');
 
 export class BTC_Driver extends GenericDriver {
   getUTXOEndpoint() {
@@ -14,7 +14,7 @@ export class BTC_Driver extends GenericDriver {
     if (endpoint) {
       return endpoint;
     }
-    throw new Error("BTC UTXO endpoint is required in config[other] section");
+    throw new Error('BTC UTXO endpoint is required in config[other] section');
   }
   getUTXO = async (address: string) => {
     const url = this.getUTXOEndpoint() + address + '?confirmed=false';
@@ -27,13 +27,13 @@ export class BTC_Driver extends GenericDriver {
     };
     const response = await axios(param);
     return response.data;
-  }
+  };
   getTxSendProposals = async (destination: string, valueToSend: number) => {
-   const fromAddress = this.assetConfig.walletAddress!;
-   const privKey = this.assetConfig.privKey;
-  //  const currency = this.assetConfig.symbol;
+    const fromAddress = this.assetConfig.walletAddress!;
+    const privKey = this.assetConfig.privKey;
+    //  const currency = this.assetConfig.symbol;
 
-   const config: object = {
+    const config: object = {
       method: 'get',
       url: this.getFeeEndpoint(),
     };
@@ -57,14 +57,16 @@ export class BTC_Driver extends GenericDriver {
         txid: t.txid,
         vout: t.vout,
         value: parseInt(t.value, 10),
-        amount: satoshi_to_btc(t.value)
-      })
+        amount: satoshi_to_btc(t.value),
+      });
     });
-    let targets = [{
-      address: destination,
-      value:  btc_to_satoshi(valueToSend)
-    }]
-    let fees = <IFeeMap>{}
+    let targets = [
+      {
+        address: destination,
+        value: btc_to_satoshi(valueToSend),
+      },
+    ];
+    let fees: IFeeMap = {};
     //
     let feeSet = [FEE_TYPES.REGULAR, FEE_TYPES.PRIORITY];
     let inputs: any = [];
@@ -73,12 +75,12 @@ export class BTC_Driver extends GenericDriver {
     let result: any = {};
     let adjustedOutputs: any = [];
     let adjustedInputs: any = [];
-        
+
     let privateKey = privKey;
 
     for (let i = 0; i < feeSet.length; i++) {
       const feeType = feeSet[i];
-      result = coinSelect(utxos.slice(), targets.slice(), data[feeType]);      
+      result = coinSelect(utxos.slice(), targets.slice(), data[feeType]);
       inputs = result.inputs;
       outputs = result.outputs;
       if (!inputs || !outputs) {
@@ -94,24 +96,26 @@ export class BTC_Driver extends GenericDriver {
           index: o.vout,
           privateKey: privateKey,
           value: o.value, //SATOSHI
-          amount: o.amount //BTC
+          amount: o.amount, //BTC
         });
       }
       // Convert from satoshi back to BTC [];
       for (let z = 0; z < outputs.length; z++) {
         const o = outputs[z];
-        adjustedOutputs.push(Object.assign({}, o, {
-          address: !o.address ? fromAddress : o.address,
-          value: o.value, //SATOSHI
-          amount: satoshi_to_btc(o.value) //BTC
-        }));
+        adjustedOutputs.push(
+          Object.assign({}, o, {
+            address: !o.address ? fromAddress : o.address,
+            value: o.value, //SATOSHI
+            amount: satoshi_to_btc(o.value), //BTC
+          })
+        );
       }
       fees[feeType] = new BitcoinFee(fee, {
         fromUTXO: adjustedInputs,
         to: adjustedOutputs,
       });
     }
-    //    
-    return <IFeeMap>fees;
-  }
+    //
+    return fees;
+  };
 }

@@ -1,4 +1,4 @@
-import { EthereumGenerator } from './ethereum'
+import { EthereumGenerator } from './ethereum';
 /**
  *
  *
@@ -6,6 +6,4 @@ import { EthereumGenerator } from './ethereum'
  * @class BscGenerator
  * @extends {EthereumGenerator}
  */
-export class BscGenerator extends EthereumGenerator {
-
-}
+export class BscGenerator extends EthereumGenerator {}

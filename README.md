@@ -1,15 +1,19 @@
 ## 🅒🅖🅒 Coingrig Core
 The Coingrig Core library handling the wallet interactions
 
-### Setup
+### Usage in your project
+Import the library in your project with `yarn add @coingrig/core`
+
+### Library Development setup
 Run `yarn`. (Installs dependencies and links packages in the workspace.)
 
-### Compilation
+#### Compilation
 Create an `.env` file to configure the platform: `TESTNET=true|false`.  
 The default value is `TESTNET=false`.
 
-### Test
-Jest tests are set up to run with `TESTNET=true yarn test`.  
+#### Test
+Jest tests are set up to run with `TESTNET=true yarn test`. 
+
 
 ---
 

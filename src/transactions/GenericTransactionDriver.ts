@@ -10,7 +10,7 @@ export class GenericTransactionDriver {
     this.assetConfig = assetConfig;
     this.currency = assetConfig.symbol;
   }
-  send = async (_transaction: GenericTxProposal) : Promise<any> => {    
+  send = async (_transaction: GenericTxProposal): Promise<any> => {
     return null;
-  }
+  };
 }

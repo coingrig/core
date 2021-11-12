@@ -13,12 +13,12 @@ export class GenericBalanceDriver implements IBalanceDriver {
   }
   getBalance = async (_address: string) => {
     return new GenericBalance(this.currency, 0, 0);
-  }
+  };
   getBalanceEndpoint() {
     const endpoint = this.config.endpoint;
     if (endpoint) {
       return endpoint;
     }
-    throw new Error(this.currency + " Balance currency is required in config");
+    throw new Error(this.currency + ' Balance currency is required in config');
   }
 }

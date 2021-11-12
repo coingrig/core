@@ -11,13 +11,13 @@ export class GenericDriver implements IFeeDriver {
     this.currency = assetConfig.symbol;
   }
   getTxSendProposals = async (_destination: string, _valueToSend: number) => {
-    return {}
-  }
+    return {};
+  };
   getFeeEndpoint() {
     const endpoint = this.config.endpoint;
     if (endpoint) {
       return endpoint;
     }
-    throw new Error(this.currency + " Balance currency is required in config");
+    throw new Error(this.currency + ' Balance currency is required in config');
   }
 }

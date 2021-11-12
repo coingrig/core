@@ -1,13 +1,11 @@
 import { IFeeMap, FEE_TYPES } from '../IFee';
 import { GenericDriver } from '../GenericDriver';
-import { EthereumFee } from "../types/EthereumFee";
+import { EthereumFee } from '../types/EthereumFee';
 import axios from 'axios';
 import { TransactionConfig } from 'web3-core';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import {
-  TRANSFER_METHOD_ABI,
-} from '../../constants';
+import { TRANSFER_METHOD_ABI } from '../../constants';
 
 export class ETH_Driver extends GenericDriver {
   getTxSendProposals = async (destination: string, valueToSend: number) => {
@@ -33,17 +31,17 @@ export class ETH_Driver extends GenericDriver {
     // "fastestWait": 0.4,
     // }
 
-    let fees = <IFeeMap>{}
-    
+    let fees: IFeeMap = {};
+
     let body = {
       to: destination,
       amount: valueToSend,
       currency: currency,
       fee: {
-        gasLimit: (currency === 'ETH') ? 40000 : null,
+        gasLimit: currency === 'ETH' ? 40000 : null,
         gasPrice: (data.average / 10).toString(),
       },
-      fromPrivateKey: privateKey
+      fromPrivateKey: privateKey,
     };
 
     let proposal = await this.buildProposal(body);
@@ -55,20 +53,22 @@ export class ETH_Driver extends GenericDriver {
       amount: valueToSend,
       currency: currency,
       fee: {
-        gasLimit: (currency === 'ETH') ? 40000 : null,
+        gasLimit: currency === 'ETH' ? 40000 : null,
         gasPrice: (data.fast / 10).toString(),
       },
-      fromPrivateKey: privateKey
+      fromPrivateKey: privateKey,
     };
 
     proposal = await this.buildProposal(body);
 
     fees[FEE_TYPES.PRIORITY] = new EthereumFee(proposal);
-    return <IFeeMap>fees;
-  }  
+    return fees;
+  };
 
   private async buildProposal(body: any) {
-    const provider = new Web3.providers.HttpProvider(this.getProposalEndpoint());
+    const provider = new Web3.providers.HttpProvider(
+      this.getProposalEndpoint()
+    );
 
     const {
       fromPrivateKey,
@@ -123,10 +123,10 @@ export class ETH_Driver extends GenericDriver {
       ...tx,
       gasPrice,
     };
-  
+
     if (!signatureId) {
       tx.gas = fee?.gasLimit ?? (await client.eth.estimateGas(tx));
-    } 
+    }
 
     return {
       signatureId: signatureId,
@@ -136,7 +136,7 @@ export class ETH_Driver extends GenericDriver {
         gasPrice: fee.gasPrice,
       },
       proposal: signatureId ? JSON.stringify(tx) : tx,
-    }
+    };
   }
 
   getProposalEndpoint() {
@@ -144,6 +144,6 @@ export class ETH_Driver extends GenericDriver {
     if (endpoint) {
       return endpoint;
     }
-    throw new Error(this.currency + " Balance currency is required in config");
+    throw new Error(this.currency + ' Balance currency is required in config');
   }
 }

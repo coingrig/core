@@ -6,7 +6,7 @@
  * @property {string} symbol Official symbol
  * @property {string} name Display name
  * @property {string} chain Blockchain type
- * @property {string} type 
+ * @property {string} type
  * @property {null|number} decimals
  * @property {null|string} contract Contract address if it is a token
  * @property {*} options
