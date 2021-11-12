@@ -1,6 +1,5 @@
 import { IFee } from './IFee';
-import { Currency } from '../currencies'
-
+import { Currency } from '../currencies';
 
 export class GenericTxProposal implements IFee {
   currency = Currency.BTC;

@@ -3,7 +3,7 @@ import { Currency } from '../currencies';
 export const FEE_TYPES = {
   REGULAR: 'regular',
   PRIORITY: 'priority',
-}
+};
 
 export interface IFee {
   currency: Currency;
@@ -17,6 +17,9 @@ export interface IFeeMap {
 }
 
 export interface IFeeDriver {
-  currency: Currency;
-  getTxSendProposals(address: string, privKey: any, destination: string, valueToSend: number, currency?: Currency): Promise<IFeeMap>;
+  currency: string;
+  getTxSendProposals(
+    destination: string,
+    valueToSend: number
+  ): Promise<IFeeMap>;
 }

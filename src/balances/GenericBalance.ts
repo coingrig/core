@@ -7,15 +7,21 @@ export class GenericBalance implements IBalance {
   unconfirmedBalance = 0;
   confirmedBalance = 0;
 
-  constructor(currency: string, confirmedBalance: number, unconfirmedBalance: number) {
-    this.currency = currency
-    this.value = Number(new BigNumber(confirmedBalance).plus(new BigNumber(unconfirmedBalance)));
+  constructor(
+    currency: string,
+    confirmedBalance: number,
+    unconfirmedBalance: number
+  ) {
+    this.currency = currency;
+    this.value = Number(
+      new BigNumber(confirmedBalance).plus(new BigNumber(unconfirmedBalance))
+    );
     this.confirmedBalance = confirmedBalance;
     this.unconfirmedBalance = unconfirmedBalance;
   }
   getValue() {
     return this.value;
-  };
+  }
   getConfirmedBalance() {
     return this.confirmedBalance;
   }
