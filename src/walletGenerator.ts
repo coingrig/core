@@ -1,16 +1,21 @@
 import { Chains } from './chains';
 import { CONFIG } from './utils/config';
 import { generateMnemonic } from 'bip39';
-import { BitcoinGenerator, BscGenerator, EthereumGenerator, PolygonGenerator } from './generators';
+import {
+  BitcoinGenerator,
+  BscGenerator,
+  EthereumGenerator,
+  PolygonGenerator,
+} from './generators';
 
 const DRIVER_NAMESPACE: {
-  [key: string]: any
+  [key: string]: any;
 } = {
   [Chains.BTC]: BitcoinGenerator,
   [Chains.ETH]: EthereumGenerator,
   [Chains.MATIC]: PolygonGenerator,
   [Chains.BSC]: BscGenerator,
-}
+};
 
 /**
  *
@@ -20,7 +25,7 @@ const DRIVER_NAMESPACE: {
  */
 export class WalletGenerator {
   /**
-   * Generates a string containing the 12 words used as a mnemonic 
+   * Generates a string containing the 12 words used as a mnemonic
    * to create the private and public wallet keys.
    *
    * @static
@@ -37,7 +42,7 @@ export class WalletGenerator {
    *
    * @static
    * @param {Chains} chain
-   * @return {GenericGenerator} 
+   * @return {GenericGenerator}
    * @memberof WalletGenerator
    */
   static getDriver(chain: Chains) {
@@ -56,10 +61,14 @@ export class WalletGenerator {
    * @param {Chains} chain The type of chain
    * @param {string} mnemonic
    * @param {*} [config=CONFIG]
-   * @return {string} The wallet's XPUB address 
+   * @return {string} The wallet's XPUB address
    * @memberof WalletGenerator
    */
-  static async generateWalletXpub(chain: Chains, mnemonic: any, config: any = CONFIG) {
+  static async generateWalletXpub(
+    chain: Chains,
+    mnemonic: any,
+    config: any = CONFIG
+  ) {
     let driver = WalletGenerator.getDriver(chain);
     return driver.generateWalletXpub(mnemonic, config);
   }
@@ -75,23 +84,33 @@ export class WalletGenerator {
    * @return {string} The wallet's private key
    * @memberof WalletGenerator
    */
-  static async generatePrivateKeyFromMnemonic(chain: Chains, mnemonic: any, derivation: any, config: any = CONFIG) {
+  static async generatePrivateKeyFromMnemonic(
+    chain: Chains,
+    mnemonic: any,
+    derivation: any,
+    config: any = CONFIG
+  ) {
     let driver = WalletGenerator.getDriver(chain);
     return driver.generatePrivateKeyFromMnemonic(mnemonic, derivation, config);
   }
 
   /**
-   * Generate the public wallet address for the specified chain 
+   * Generate the public wallet address for the specified chain
    *
    * @static
    * @param {Chains} chain The type of chain
    * @param {string} xpub
    * @param {integer} derivation
    * @param {*} [config=CONFIG]
-   * @return {string} The wallet's public address 
+   * @return {string} The wallet's public address
    * @memberof WalletGenerator
    */
-  static async generateAddressFromXPub(chain: Chains, xpub: any, derivation: any, config: any = CONFIG) {
+  static async generateAddressFromXPub(
+    chain: Chains,
+    xpub: any,
+    derivation: any,
+    config: any = CONFIG
+  ) {
     let driver = WalletGenerator.getDriver(chain);
     return driver.generateAddressFromXPub(xpub, derivation, config);
   }

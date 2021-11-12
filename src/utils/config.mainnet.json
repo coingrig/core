@@ -36,7 +36,8 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/eth/address/"
+            "endpoint": "https://api.coingrig.com/eth/address/",
+            "token_endpoint": "https://api.coingrig.com/web3eth/"
           }
         }
       ],

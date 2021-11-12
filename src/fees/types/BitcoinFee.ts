@@ -1,6 +1,6 @@
-import { GenericTxProposal } from "../GenericTxProposal";
+import { GenericTxProposal } from '../GenericTxProposal';
 import { Currency } from '../../currencies';
-import { SATOSHI } from "../../constants";
+import { SATOSHI } from '../../constants';
 import BigNumber from 'bignumber.js';
 
 export class BitcoinFee extends GenericTxProposal {
@@ -9,9 +9,9 @@ export class BitcoinFee extends GenericTxProposal {
     value: number;
     proposal: any;
   } = {
-      value: 0,
-      proposal: null,
-    };
+    value: 0,
+    proposal: null,
+  };
   constructor(value: number, settings: any) {
     super();
     this.settings = {
@@ -20,7 +20,9 @@ export class BitcoinFee extends GenericTxProposal {
     };
   }
   getFeeValue() {
-    return (new BigNumber(this.settings.value)).dividedBy(new BigNumber(SATOSHI)).toNumber();
+    return new BigNumber(this.settings.value)
+      .dividedBy(new BigNumber(SATOSHI))
+      .toNumber();
   }
   getData() {
     return this.settings.proposal;

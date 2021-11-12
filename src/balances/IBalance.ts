@@ -1,10 +1,10 @@
 export interface IBalance {
-  currency: string;  
+  currency: string;
   getValue(): number;
   getUnconfirmedBalance(): number;
 }
 
 export interface IBalanceDriver {
-  currency: string;  
+  currency: string;
   getBalance(address: string): Promise<IBalance>;
 }
