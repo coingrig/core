@@ -33,5 +33,5 @@ export class WalletFactory {
         throw new Error('Unsupported wallet blockchain');
     }
     return wallet;
-  }
+  };
 }

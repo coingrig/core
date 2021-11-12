@@ -22,17 +22,27 @@ export class BitcoinGenerator extends GenericGenerator {
       config.TESTNET ? networks.testnet.bip32 : networks.bitcoin.bip32
     );
     return hdwallet
-    .derive(config.TESTNET ? TESTNET_DERIVATION_PATH : BTC_DERIVATION_PATH)
-    .toJSON().xpub
+      .derive(config.TESTNET ? TESTNET_DERIVATION_PATH : BTC_DERIVATION_PATH)
+      .toJSON().xpub;
   }
-  static async generatePrivateKeyFromMnemonic(mnemonic: any, derivation: any, config: any = CONFIG) {
+  static async generatePrivateKeyFromMnemonic(
+    mnemonic: any,
+    derivation: any,
+    config: any = CONFIG
+  ) {
     const network = config.TESTNET ? networks.testnet : networks.bitcoin;
     return fromSeed(await mnemonicToSeed(mnemonic), network)
-      .derivePath(config.TESTNET ? TESTNET_DERIVATION_PATH : BTC_DERIVATION_PATH)
+      .derivePath(
+        config.TESTNET ? TESTNET_DERIVATION_PATH : BTC_DERIVATION_PATH
+      )
       .derive(derivation)
       .toWIF();
   }
-  static async generateAddressFromXPub(xpub: any, derivation: any, config:any = CONFIG) {
+  static async generateAddressFromXPub(
+    xpub: any,
+    derivation: any,
+    config: any = CONFIG
+  ) {
     const network = config.TESTNET ? networks.testnet : networks.bitcoin;
     const w = fromBase58(xpub, network).derivePath(String(derivation));
     // p2wpkh | p2pkh

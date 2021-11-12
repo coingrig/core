@@ -1,4 +1,3 @@
-import { Currency } from '../../currencies';
 import { GenericTransactionDriver } from '../GenericTransactionDriver';
 import { GenericTxProposal } from '../../fees/GenericTxProposal';
 import axios from 'axios';
@@ -7,9 +6,8 @@ import { ECPair, networks, Psbt } from 'bitcoinjs-lib';
 import { CONFIG } from '../../utils/config';
 
 export class BTC_Driver extends GenericTransactionDriver {
-  currency = Currency.BTC;
-  send = async (_transaction: GenericTxProposal) => {
-    let txData = await this.prepareSignedTransaction(_transaction.getData());
+  send = async (transaction: GenericTxProposal) => {
+    let txData = await this.prepareSignedTransaction(transaction.getData());
     return this.sendTx(txData);
   };
 

@@ -18,15 +18,29 @@ export class EthereumGenerator extends GenericGenerator {
     const derivePath = hdwallet.derivePath(path);
     return derivePath.publicExtendedKey().toString();
   }
-  static async generatePrivateKeyFromMnemonic(mnemonic: any, derivation: any, config: any = CONFIG)  {
+  static async generatePrivateKeyFromMnemonic(
+    mnemonic: any,
+    derivation: any,
+    config: any = CONFIG
+  ) {
     const path = config.TESTNET ? TESTNET_DERIVATION_PATH : ETH_DERIVATION_PATH;
     const hdwallet = ethHdKey.fromMasterSeed(await mnemonicToSeed(mnemonic));
     const derivePath = hdwallet.derivePath(path).deriveChild(derivation);
     return derivePath.getWallet().getPrivateKeyString();
   }
-  static async generateAddressFromXPub(xpub: any, derivation: any, _config:any) {
+  static async generateAddressFromXPub(
+    xpub: any,
+    derivation: any,
+    _config: any
+  ) {
     const w = ethHdKey.fromExtendedKey(xpub);
     const wallet = w.deriveChild(derivation).getWallet();
-    return '0x' + wallet.getAddress().toString('hex').toLowerCase();
+    return (
+      '0x' +
+      wallet
+        .getAddress()
+        .toString('hex')
+        .toLowerCase()
+    );
   }
 }
