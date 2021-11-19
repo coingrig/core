@@ -7,21 +7,24 @@ import { MNEMONIC } from './fixtures';
 let config: IWalletConfig = {
   symbol: 'CGTEST',
   name: 'CGTEST',
-  chain: 'BSC', 
+  chain: 'BSC',
   type: 'token',
   decimals: 18,
-  contract: '0x9a7eC0322aD01d7Cb03D410faED912ed92AEa25C',  
+  contract: '0x9a7eC0322aD01d7Cb03D410faED912ed92AEa25C',
   walletAddress: null,
   privKey: null,
-}
+};
 
-describe('BSC Token Transactions', () => { 
-
+describe('BSC Token Transactions', () => {
   it('can_get_decimals_token', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-    let _config = Object.assign({}, config, {walletAddress: address});
+    let address = await WalletGenerator.generateAddressFromXPub(
+      Chains.BSC,
+      xpub,
+      0
+    );
+    let _config = Object.assign({}, config, { walletAddress: address });
     _config.decimals = null;
     let w = WalletFactory.getWallet(_config);
     console.log(w.currency);
@@ -33,8 +36,12 @@ describe('BSC Token Transactions', () => {
   it('can_get_balance_for_token_without_decimals', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-    let _config = Object.assign({}, config, {walletAddress: address});
+    let address = await WalletGenerator.generateAddressFromXPub(
+      Chains.BSC,
+      xpub,
+      0
+    );
+    let _config = Object.assign({}, config, { walletAddress: address });
     _config.decimals = null;
     let w = WalletFactory.getWallet(_config);
     let decimals = await w.getDecimals();
@@ -49,7 +56,7 @@ describe('BSC Token Transactions', () => {
   //   let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
   //   let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
   //   let _config = Object.assign({}, config, {walletAddress: address});
-  //   let w = WalletFactory.getWallet(_config);    
+  //   let w = WalletFactory.getWallet(_config);
   //   let balance = await w.getBalance();
   //   expect(balance.getValue()).toBeGreaterThan(0);
   //   console.log(balance.getValue().toString());

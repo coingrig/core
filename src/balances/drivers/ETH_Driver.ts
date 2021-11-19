@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js';
 
 export class ETH_Driver extends WEB3_Driver {
   config: any;
-  nativeCurrencySymbol: string = 'ETH'
+  nativeCurrencySymbol: string = 'ETH';
   getNativeAssetBalance = async (address: string) => {
     const url = this.getBalanceEndpoint() + address + '?details=basic';
     const param: object = {
@@ -19,8 +19,16 @@ export class ETH_Driver extends WEB3_Driver {
     };
     const response = await axios(param);
 
-    const confirmedBalance: number = Number(new BigNumber(response.data.balance));
-    const unconfirmedBalance: number = Number(new BigNumber(response.data.unconfirmedBalance));
-    return new GenericBalance(this.currency, Number(weiToETH(confirmedBalance.toString())), Number(weiToETH(unconfirmedBalance.toString())));
-  }
+    const confirmedBalance: number = Number(
+      new BigNumber(response.data.balance)
+    );
+    const unconfirmedBalance: number = Number(
+      new BigNumber(response.data.unconfirmedBalance)
+    );
+    return new GenericBalance(
+      this.currency,
+      Number(weiToETH(confirmedBalance.toString())),
+      Number(weiToETH(unconfirmedBalance.toString()))
+    );
+  };
 }

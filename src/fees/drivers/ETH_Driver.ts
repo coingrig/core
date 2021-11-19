@@ -16,5 +16,5 @@ export class ETH_Driver extends WEB3_Driver {
     prices[FEE_TYPES.REGULAR] = data.average / 10;
     prices[FEE_TYPES.PRIORITY] = data.fast / 10;
     return prices;
-  }
+  };
 }

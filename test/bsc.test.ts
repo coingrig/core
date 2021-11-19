@@ -6,7 +6,7 @@ import { ETH_ADDRESS_RECEIVER, MNEMONIC } from './fixtures';
 let config: IWalletConfig = {
   symbol: 'BNB',
   name: 'Binance',
-  chain: 'BSC', 
+  chain: 'BSC',
   type: 'coin',
   decimals: 18,
   contract: null,
@@ -15,27 +15,41 @@ let config: IWalletConfig = {
   },
   walletAddress: null,
   privKey: null,
-}
+};
 
 describe('BscWallet', () => {
-
   it('can_get_balance', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-    let _config = Object.assign({}, config, {walletAddress: address});
+    let address = await WalletGenerator.generateAddressFromXPub(
+      Chains.BSC,
+      xpub,
+      0
+    );
+    let _config = Object.assign({}, config, { walletAddress: address });
     let w = WalletFactory.getWallet(_config);
     let balance = await w.getBalance();
-    expect(balance.getValue()).toBeGreaterThan(0);    
+    expect(balance.getValue()).toBeGreaterThan(0);
   });
 
   it('can_get_fee', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-    let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(Chains.BSC, mnemonic, 0);
+    let address = await WalletGenerator.generateAddressFromXPub(
+      Chains.BSC,
+      xpub,
+      0
+    );
+    let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(
+      Chains.BSC,
+      mnemonic,
+      0
+    );
     let to = ETH_ADDRESS_RECEIVER;
-    let _config = Object.assign({}, config, {walletAddress: address, privKey: privKey});
+    let _config = Object.assign({}, config, {
+      walletAddress: address,
+      privKey: privKey,
+    });
     let w = WalletFactory.getWallet(_config);
     let fees = await w.getTxSendProposals(to, 0.0001);
     expect(typeof fees).toBe('object');
@@ -44,10 +58,21 @@ describe('BscWallet', () => {
   it('can_send_bnb', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-    let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(Chains.BSC, mnemonic, 0);
+    let address = await WalletGenerator.generateAddressFromXPub(
+      Chains.BSC,
+      xpub,
+      0
+    );
+    let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(
+      Chains.BSC,
+      mnemonic,
+      0
+    );
     let to = ETH_ADDRESS_RECEIVER;
-    let _config = Object.assign({}, config, {walletAddress: address, privKey: privKey});
+    let _config = Object.assign({}, config, {
+      walletAddress: address,
+      privKey: privKey,
+    });
     let w = WalletFactory.getWallet(_config);
     let balance = await w.getBalance();
     expect(balance.getValue()).toBeGreaterThan(0);
@@ -56,6 +81,4 @@ describe('BscWallet', () => {
     let result = await w.postTxSend(proposals.regular);
     console.log('result', result);
   });
-
 });
-

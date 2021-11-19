@@ -40,8 +40,8 @@ const BSC_DESCRIPTOR: IWalletConfig = {
   decimals: 18,
   contract: null,
   walletAddress: null,
-  privKey: null
-}
+  privKey: null,
+};
 
 describe('Fees', () => {
   it('can_use_btc_driver', async () => {
@@ -123,17 +123,23 @@ describe('Fees', () => {
     let from = ETH_ADDRESS_SENDER;
     let to = ETH_ADDRESS_RECEIVER;
 
-    let privKey = await Generators.EthereumGenerator.generatePrivateKeyFromMnemonic(mnemonic, 0);
+    let privKey = await Generators.EthereumGenerator.generatePrivateKeyFromMnemonic(
+      mnemonic,
+      0
+    );
     let config = Object.assign({}, BSC_DESCRIPTOR, {
       privKey: privKey,
-      walletAddress: from
-    })
-    let d = new Fees.BSC_Driver(config, CONFIG.CHAIN_ENDPOINTS.BSC.fee[0].config);
+      walletAddress: from,
+    });
+    let d = new Fees.BSC_Driver(
+      config,
+      CONFIG.CHAIN_ENDPOINTS.BSC.fee[0].config
+    );
     let proposals = await d.getTxSendProposals(to, 0.00001);
     expect(typeof proposals).toBe('object');
     ['regular', 'priority'].forEach(element => {
       expect(proposals).toHaveProperty(element);
-      let fee = <BnbFee> proposals[element];
+      let fee: BnbFee = proposals[element];
       expect(fee).toHaveProperty('currency');
       expect(fee.currency).toBe('BNB');
       expect(fee).toHaveProperty('settings');
@@ -145,9 +151,8 @@ describe('Fees', () => {
       let proposal = fee.getData().proposal;
       console.log(fee.settings);
       console.log(proposal);
-      expect(typeof proposal).toEqual('object');      
+      expect(typeof proposal).toEqual('object');
       expect(fee.getFeeValue()).toBeGreaterThan(0);
     });
   });
-
 });
