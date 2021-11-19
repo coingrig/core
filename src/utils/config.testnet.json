@@ -2,6 +2,33 @@
   "TESTNET": true,
   "DEFAULT_DERIVATION_KEY": 0,
   "CHAIN_ENDPOINTS": {
+    "BSC": {
+      "balance": [
+        {
+          "driver": "BSC_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/web3test/bsc/"
+          }
+        }
+      ],
+      "fee": [
+        {
+          "driver": "BSC_Driver",
+          "config": {
+            "endpoint": "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
+            "proposal_endpoint": "https://api.coingrig.com/web3test/bsc/"
+          }
+        }
+      ],
+      "transaction": [
+        {
+          "driver": "BSC_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/web3test/bsc/"           
+          }
+        }
+      ]
+    },
     "BTC": {
       "balance": [
         {
@@ -37,7 +64,7 @@
           "driver": "ETH_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/teth/address/",
-            "token_endpoint": "https://api.coingrig.com/web3teth/"
+            "token_endpoint": "https://api.coingrig.com/web3test/eth/"
           }
         }
       ],
@@ -46,7 +73,7 @@
           "driver": "ETH_Driver",
           "config": {
             "endpoint": "https://ethgasstation.info/json/ethgasAPI.json",            
-            "proposal_endpoint": "https://api.coingrig.com/web3teth/"
+            "proposal_endpoint": "https://api.coingrig.com/web3test/eth/"
           }
         }
       ],
@@ -54,7 +81,7 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web3teth/"           
+            "endpoint": "https://api.coingrig.com/web3test/eth/"           
           }
         }
       ]
