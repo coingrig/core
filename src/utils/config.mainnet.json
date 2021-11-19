@@ -15,7 +15,7 @@
         {
           "driver": "BSC_Driver",
           "config": {
-            "endpoint": "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
+            "endpoint": "https://api.coingrig.com/gas/bsc/",
             "proposal_endpoint": "https://api.coingrig.com/web3/bsc/"
           }
         }
@@ -72,7 +72,7 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://ethgasstation.info/json/ethgasAPI.json",            
+            "endpoint": "https://api.coingrig.com/gas/eth/",            
             "proposal_endpoint": "https://api.coingrig.com/web/eth/"
           }
         }
@@ -82,6 +82,33 @@
           "driver": "ETH_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/web/eth/"           
+          }
+        }
+      ]
+    },
+    "POLYGON": {
+      "balance": [
+        {
+          "driver": "POLYGON_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/web3/polygon/"
+          }
+        }
+      ],
+      "fee": [
+        {
+          "driver": "POLYGON_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/gas/polygon/",
+            "proposal_endpoint": "https://api.coingrig.com/web3/polygon/"
+          }
+        }
+      ],
+      "transaction": [
+        {
+          "driver": "POLYGON_Driver",
+          "config": {
+            "endpoint": "https://api.coingrig.com/web3/polygon/"           
           }
         }
       ]
