@@ -22,7 +22,7 @@ export class WEB3_Driver extends GenericBalanceDriver {
     const confirmedBalance: number = Number(new BigNumber(bnbBalance));
 
     const value = Number(weiToETH(confirmedBalance.toString()));
-    console.log('value', value);
+    // console.log('value', value);
     return new GenericBalance(this.currency, value, 0);
   };
   getTokenBalance = async (address: string) => {

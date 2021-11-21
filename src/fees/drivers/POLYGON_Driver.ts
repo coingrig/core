@@ -1,9 +1,11 @@
 import { FEE_TYPES } from '../IFee';
 import { WEB3_Driver } from './WEB3_Driver';
+import { PolygonFee } from '../types/PolygonFee';
 import axios from 'axios';
 
-export class ETH_Driver extends WEB3_Driver {
-  nativeAssetSymbol: string = 'ETH';
+export class POLYGON_Driver extends WEB3_Driver {
+  nativeAssetSymbol: string = 'MATIC';
+
   getGasFeePrices = async () => {
     const config: object = {
       method: 'get',
@@ -16,5 +18,9 @@ export class ETH_Driver extends WEB3_Driver {
     prices[FEE_TYPES.REGULAR] = data.standard;
     prices[FEE_TYPES.PRIORITY] = data.fast;
     return prices;
+  };
+
+  buildFee = (proposal: any) => {
+    return new PolygonFee(proposal);
   };
 }

@@ -12,11 +12,11 @@ export class BSC_Driver extends WEB3_Driver {
       url: this.getFeeEndpoint(),
     };
     const response = await axios(config);
-    const data = response.data.result;
+    const data = response.data;
 
     let prices: any = {};
-    prices[FEE_TYPES.REGULAR] = data.SafeGasPrice;
-    prices[FEE_TYPES.PRIORITY] = data.FastGasPrice;
+    prices[FEE_TYPES.REGULAR] = data.standard;
+    prices[FEE_TYPES.PRIORITY] = data.fast;
     return prices;
   };
 

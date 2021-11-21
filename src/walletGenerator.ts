@@ -13,7 +13,7 @@ const DRIVER_NAMESPACE: {
 } = {
   [Chains.BTC]: BitcoinGenerator,
   [Chains.ETH]: EthereumGenerator,
-  [Chains.MATIC]: PolygonGenerator,
+  [Chains.POLYGON]: PolygonGenerator,
   [Chains.BSC]: BscGenerator,
 };
 
