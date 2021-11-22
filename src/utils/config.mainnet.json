@@ -64,7 +64,7 @@
           "driver": "ETH_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/eth/address/",
-            "token_endpoint": "https://api.coingrig.com/web/eth/"
+            "token_endpoint": "https://api.coingrig.com/web3/eth/"
           }
         }
       ],
@@ -73,7 +73,7 @@
           "driver": "ETH_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/gas/eth/",            
-            "proposal_endpoint": "https://api.coingrig.com/web/eth/"
+            "proposal_endpoint": "https://api.coingrig.com/web3/eth/"
           }
         }
       ],
@@ -81,7 +81,7 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web/eth/"           
+            "endpoint": "https://api.coingrig.com/web3/eth/"           
           }
         }
       ]
