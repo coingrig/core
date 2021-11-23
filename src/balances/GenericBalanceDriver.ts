@@ -19,6 +19,8 @@ export class GenericBalanceDriver implements IBalanceDriver {
     if (endpoint) {
       return endpoint;
     }
-    throw new Error(this.currency + ' Balance currency is required in config');
+    throw new Error(
+      this.currency + ' Balance currency endpoint is required in config'
+    );
   }
 }

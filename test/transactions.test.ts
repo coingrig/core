@@ -27,6 +27,28 @@ const ETH_DESCRIPTOR: IWalletConfig = {
   privKey: null,
 };
 
+const BSC_DESCRIPTOR: IWalletConfig = {
+  symbol: 'BNB',
+  name: 'BNB',
+  chain: 'BSC',
+  type: 'coin',
+  decimals: 18,
+  contract: null,
+  walletAddress: null,
+  privKey: null,
+};
+
+const POLYGON_DESCRIPTOR: IWalletConfig = {
+  symbol: 'MATIC',
+  name: 'MATIC',
+  chain: 'POLYGON',
+  type: 'coin',
+  decimals: 18,
+  contract: null,
+  walletAddress: null,
+  privKey: null,
+};
+
 describe('Transactions', () => {
   it('can_use_btc_driver', async () => {
     let mnemonic = MNEMONIC;
@@ -56,6 +78,7 @@ describe('Transactions', () => {
     expect(typeof proposals).toBe('object');
     let fee = proposals.regular;
     let txHandler = new Transactions.BTC_Driver(
+      config,
       CONFIG.CHAIN_ENDPOINTS.BTC.transaction[0].config
     );
     let signedTx = await txHandler.prepareSignedTransaction(fee.getData());
@@ -94,7 +117,86 @@ describe('Transactions', () => {
     expect(typeof proposals).toBe('object');
     let fee = proposals.regular;
     let txHandler = new Transactions.ETH_Driver(
+      config,
       CONFIG.CHAIN_ENDPOINTS.ETH.transaction[0].config
+    );
+    let signedTx = await txHandler.prepareSignedTransaction(fee.getData());
+    expect(typeof signedTx).toBe('string');
+    expect(signedTx.length).toBeGreaterThan(0);
+    let sent = await txHandler.send(fee);
+    expect(sent.length).toBeGreaterThan(0);
+    // console.log(sent);
+  });
+
+  it('can_use_bsc_driver', async () => {
+    let mnemonic = MNEMONIC;
+    let xpub = await Generators.EthereumGenerator.generateWalletXpub(
+      mnemonic,
+      CONFIG
+    );
+    let from = await Generators.EthereumGenerator.generateAddressFromXPub(
+      xpub,
+      0,
+      CONFIG
+    );
+    let privKey = await Generators.EthereumGenerator.generatePrivateKeyFromMnemonic(
+      mnemonic,
+      0
+    );
+    let to = ETH_ADDRESS_RECEIVER;
+    let config = Object.assign({}, BSC_DESCRIPTOR, {
+      privKey: privKey,
+      walletAddress: from,
+    });
+    let d = new Fees.BSC_Driver(
+      config,
+      CONFIG.CHAIN_ENDPOINTS.BSC.fee[0].config
+    );
+    let proposals = await d.getTxSendProposals(to, 0.00001);
+    expect(typeof proposals).toBe('object');
+    let fee = proposals.regular;
+    let txHandler = new Transactions.BSC_Driver(
+      config,
+      CONFIG.CHAIN_ENDPOINTS.BSC.transaction[0].config
+    );
+    let signedTx = await txHandler.prepareSignedTransaction(fee.getData());
+    expect(typeof signedTx).toBe('string');
+    expect(signedTx.length).toBeGreaterThan(0);
+    let sent = await txHandler.send(fee);
+    expect(sent.length).toBeGreaterThan(0);
+    // console.log(sent);
+  });
+
+  it('can_use_polygon_driver', async () => {
+    let mnemonic = MNEMONIC;
+    let xpub = await Generators.PolygonGenerator.generateWalletXpub(
+      mnemonic,
+      CONFIG
+    );
+    let from = await Generators.PolygonGenerator.generateAddressFromXPub(
+      xpub,
+      0,
+      CONFIG
+    );
+    let privKey = await Generators.PolygonGenerator.generatePrivateKeyFromMnemonic(
+      mnemonic,
+      0
+    );
+    let to = ETH_ADDRESS_RECEIVER;
+    let config = Object.assign({}, POLYGON_DESCRIPTOR, {
+      privKey: privKey,
+      walletAddress: from,
+    });
+    let d = new Fees.POLYGON_Driver(
+      config,
+      CONFIG.CHAIN_ENDPOINTS.POLYGON.fee[0].config
+    );
+    let proposals = await d.getTxSendProposals(to, 0.00001);
+    expect(typeof proposals).toBe('object');
+    let fee = proposals.regular;
+    let txHandler = new Transactions.POLYGON_Driver(
+      config,
+      CONFIG.CHAIN_ENDPOINTS.POLYGON.transaction[0].config
     );
     let signedTx = await txHandler.prepareSignedTransaction(fee.getData());
     expect(typeof signedTx).toBe('string');
