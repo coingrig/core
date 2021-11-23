@@ -2,6 +2,9 @@ import { Chains } from './chains';
 import { IWalletConfig } from './wallets/IWalletConfig';
 import { BitcoinWallet } from './wallets/types/BitcoinWallet';
 import { EthereumWallet } from './wallets/types/EthereumWallet';
+import { BscWallet } from './wallets/types/BscWallet';
+import { PolygonWallet } from './wallets/types/PolygonWallet';
+
 /**
  * Implements the Factory pattern to help generate easily wallets
  * for the supported blockchains.
@@ -28,6 +31,12 @@ export class WalletFactory {
         break;
       case Chains.ETH:
         wallet = new EthereumWallet(config);
+        break;
+      case Chains.BSC:
+        wallet = new BscWallet(config);
+        break;
+      case Chains.POLYGON:
+        wallet = new PolygonWallet(config);
         break;
       default:
         throw new Error('Unsupported wallet blockchain');

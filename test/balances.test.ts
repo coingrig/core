@@ -17,7 +17,18 @@ const ETH_DESCRIPTOR: IWalletConfig = {
   symbol: 'ETH',
   name: 'Ethereum',
   chain: 'BTC',
-  type: 'ETH',
+  type: 'coin',
+  decimals: 18,
+  contract: null,
+  walletAddress: null,
+  privKey: null,
+};
+
+const BSC_DESCRIPTOR: IWalletConfig = {
+  symbol: 'BNB',
+  name: 'BNB',
+  chain: 'BSC',
+  type: 'coin',
   decimals: 18,
   contract: null,
   walletAddress: null,
@@ -46,5 +57,17 @@ describe('Balances', () => {
     expect(typeof balance).toBe('object');
     expect(balance.getValue()).toBeGreaterThan(0);
     // console.log('ETH', balance.getValue());
+  });
+
+  it('can_get_bsc_balance', async () => {
+    let from = ETH_ADDRESS_SENDER;
+    let driver = new Balances.BSC_Driver(
+      BSC_DESCRIPTOR,
+      CONFIG.CHAIN_ENDPOINTS.BSC.balance[0].config
+    );
+    let balance = await driver.getBalance(from);
+    expect(typeof balance).toBe('object');
+    expect(balance.getValue()).toBeGreaterThan(0);
+    console.log('BNB', balance.getValue());
   });
 });
