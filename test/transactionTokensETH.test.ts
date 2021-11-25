@@ -5,69 +5,39 @@ import { MNEMONIC } from './fixtures';
 // import { ETH_ADDRESS_RECEIVER } from './fixtures';
 
 let config: IWalletConfig = {
-  symbol: 'CGT',
-  name: 'CGTest',
-  chain: 'BSC',
+  symbol: 'CGTEST',
+  name: 'CGTEST',
+  chain: 'ETH',
   type: 'token',
   decimals: 18,
-  contract: '0x9a7eC0322aD01d7Cb03D410faED912ed92AEa25C',
+  contract: '0xaf3acd9361fd975427761adfe1ca234c88137a06',
   walletAddress: null,
   privKey: null,
 };
 
-describe('BSC Token Transactions', () => {
-
-  it('can_get_name_token', async () => {
-    let mnemonic = MNEMONIC;
-    let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(
-      Chains.BSC,
-      xpub,
-      0
-    );
-    let _config = Object.assign({}, config, { walletAddress: address });
-    _config.name = null;
-    let w = WalletFactory.getWallet(_config);
-    let result = await w.getCurrencyName();
-    expect(result).toBe(config.name);
-  });
-
-  it('can_get_symbol_token', async () => {
-    let mnemonic = MNEMONIC;
-    let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-    let address = await WalletGenerator.generateAddressFromXPub(
-      Chains.BSC,
-      xpub,
-      0
-    );
-    let _config = Object.assign({}, config, { walletAddress: address });
-    _config.symbol = null;
-    let w = WalletFactory.getWallet(_config);
-    let result = await w.getCurrencySymbol();
-    expect(result).toBe(config.symbol);
-  });
-
-
+describe('Ethereum Token Transactions', () => {
   it('can_get_decimals_token', async () => {
     let mnemonic = MNEMONIC;
-    let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
+    let xpub = await WalletGenerator.generateWalletXpub(Chains.ETH, mnemonic);
     let address = await WalletGenerator.generateAddressFromXPub(
-      Chains.BSC,
+      Chains.ETH,
       xpub,
       0
     );
     let _config = Object.assign({}, config, { walletAddress: address });
     _config.decimals = null;
     let w = WalletFactory.getWallet(_config);
+    console.log(w.currency);
     let decimals = await w.getDecimals();
     expect(decimals).toBeGreaterThan(0);
+    console.log('decimals', decimals);
   });
 
   // it('can_get_balance_for_token_without_decimals', async () => {
   //   let mnemonic = MNEMONIC;
-  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
+  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.ETH, mnemonic);
   //   let address = await WalletGenerator.generateAddressFromXPub(
-  //     Chains.BSC,
+  //     Chains.ETH,
   //     xpub,
   //     0
   //   );
@@ -83,9 +53,13 @@ describe('BSC Token Transactions', () => {
 
   // it('can_get_balance_for_token', async () => {
   //   let mnemonic = MNEMONIC;
-  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-  //   let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-  //   let _config = Object.assign({}, config, {walletAddress: address});
+  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.ETH, mnemonic);
+  //   let address = await WalletGenerator.generateAddressFromXPub(
+  //     Chains.ETH,
+  //     xpub,
+  //     0
+  //   );
+  //   let _config = Object.assign({}, config, { walletAddress: address });
   //   let w = WalletFactory.getWallet(_config);
   //   let balance = await w.getBalance();
   //   expect(balance.getValue()).toBeGreaterThan(0);
@@ -94,11 +68,22 @@ describe('BSC Token Transactions', () => {
 
   // it('can_get_fee_for_token', async () => {
   //   let mnemonic = MNEMONIC;
-  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-  //   let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-  //   let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(Chains.BSC, mnemonic, 0);
+  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.ETH, mnemonic);
+  //   let address = await WalletGenerator.generateAddressFromXPub(
+  //     Chains.ETH,
+  //     xpub,
+  //     0
+  //   );
+  //   let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(
+  //     Chains.ETH,
+  //     mnemonic,
+  //     0
+  //   );
   //   let to = ETH_ADDRESS_RECEIVER;
-  //   let _config = Object.assign({}, config, {walletAddress: address, privKey: privKey});
+  //   let _config = Object.assign({}, config, {
+  //     walletAddress: address,
+  //     privKey: privKey,
+  //   });
   //   let w = WalletFactory.getWallet(_config);
   //   let fees = await w.getTxSendProposals(to, 100);
   //   expect(typeof fees).toBe('object');
@@ -107,11 +92,22 @@ describe('BSC Token Transactions', () => {
 
   // it('can_send_token', async () => {
   //   let mnemonic = MNEMONIC;
-  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
-  //   let address = await WalletGenerator.generateAddressFromXPub(Chains.BSC, xpub, 0);
-  //   let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(Chains.BSC, mnemonic, 0);
+  //   let xpub = await WalletGenerator.generateWalletXpub(Chains.ETH, mnemonic);
+  //   let address = await WalletGenerator.generateAddressFromXPub(
+  //     Chains.ETH,
+  //     xpub,
+  //     0
+  //   );
+  //   let privKey = await WalletGenerator.generatePrivateKeyFromMnemonic(
+  //     Chains.ETH,
+  //     mnemonic,
+  //     0
+  //   );
   //   let to = ETH_ADDRESS_RECEIVER;
-  //   let _config = Object.assign({}, config, {walletAddress: address, privKey: privKey});
+  //   let _config = Object.assign({}, config, {
+  //     walletAddress: address,
+  //     privKey: privKey,
+  //   });
   //   let w = WalletFactory.getWallet(_config);
   //   let balance = await w.getBalance();
   //   expect(balance.getValue()).toBeGreaterThan(0);
