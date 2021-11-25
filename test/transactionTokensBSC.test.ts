@@ -16,7 +16,6 @@ let config: IWalletConfig = {
 };
 
 describe('BSC Token Transactions', () => {
-
   it('can_get_name_token', async () => {
     let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
@@ -46,7 +45,6 @@ describe('BSC Token Transactions', () => {
     let result = await w.getCurrencySymbol();
     expect(result).toBe(config.symbol);
   });
-
 
   it('can_get_decimals_token', async () => {
     let mnemonic = MNEMONIC;

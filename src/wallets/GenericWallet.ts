@@ -10,7 +10,7 @@ import { GenericBalance } from '../balances/GenericBalance';
 export class GenericWallet implements IWallet {
   config: IWalletConfig;
   address: any = null;
-  currency: string|null;
+  currency: string | null;
 
   TRANSACTION_DRIVER_NAMESPACE: {
     [key: string]: any;
@@ -92,7 +92,9 @@ export class GenericWallet implements IWallet {
     }
     let currencySymbol = await this.getCurrencySymbol();
     if (!currencySymbol) {
-      throw new Error('Unable to retrieve balance for a contract without a currency symbol!')
+      throw new Error(
+        'Unable to retrieve balance for a contract without a currency symbol!'
+      );
     }
     return new GenericBalance(currencySymbol, 0, 0);
   };
