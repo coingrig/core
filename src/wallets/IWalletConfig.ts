@@ -3,8 +3,8 @@
  *
  * @export
  * @interface IWalletConfig
- * @property {string} symbol Official symbol
- * @property {string} name Display name
+ * @property {null|string} symbol Official symbol
+ * @property {null|string} name Display name
  * @property {string} chain Blockchain type
  * @property {string} type
  * @property {null|number} decimals
@@ -14,8 +14,8 @@
  * @property {null|string} privKey The private key used for transaction signing
  */
 export interface IWalletConfig {
-  symbol: string;
-  name: string;
+  symbol: null | string;
+  name: null | string;
   chain: string;
   type: string;
   decimals: null | number;

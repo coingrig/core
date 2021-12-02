@@ -10,7 +10,7 @@ import { GenericBalance } from '../balances/GenericBalance';
 export class GenericWallet implements IWallet {
   config: IWalletConfig;
   address: any = null;
-  currency: string;
+  currency: string | null;
 
   TRANSACTION_DRIVER_NAMESPACE: {
     [key: string]: any;
@@ -49,7 +49,13 @@ export class GenericWallet implements IWallet {
     }
     return this.config.privKey;
   };
-  getCurrencySymbol = () => {
+  getCurrencyName = async (): Promise<string | null> => {
+    if (!this.config.symbol) {
+      throw new Error('Wallet currency not set!');
+    }
+    return this.config.symbol;
+  };
+  getCurrencySymbol = async (): Promise<string | null> => {
     if (!this.config.symbol) {
       throw new Error('Wallet currency not set!');
     }
@@ -84,7 +90,13 @@ export class GenericWallet implements IWallet {
         continue;
       }
     }
-    return new GenericBalance(this.getCurrencySymbol(), 0, 0);
+    let currencySymbol = await this.getCurrencySymbol();
+    if (!currencySymbol) {
+      throw new Error(
+        'Unable to retrieve balance for a contract without a currency symbol!'
+      );
+    }
+    return new GenericBalance(currencySymbol, 0, 0);
   };
   // This is a send currency transaction
   getTxSendProposals = async (destination: string, valueToSend: any) => {

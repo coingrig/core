@@ -7,7 +7,7 @@
         {
           "driver": "BSC_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web3test/bsc/"
+            "endpoint": "https://data-seed-prebsc-1-s1.binance.org:8545/"
           }
         }
       ],
@@ -16,7 +16,7 @@
           "driver": "BSC_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/gas/bsc/",
-            "proposal_endpoint": "https://api.coingrig.com/web3test/bsc/"
+            "proposal_endpoint": "https://data-seed-prebsc-1-s1.binance.org:8545/"
           }
         }
       ],
@@ -24,7 +24,7 @@
         {
           "driver": "BSC_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web3test/bsc/"           
+            "endpoint": "https://data-seed-prebsc-1-s1.binance.org:8545/"           
           }
         }
       ]
@@ -91,7 +91,7 @@
         {
           "driver": "POLYGON_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web3test/polygon/"
+            "endpoint": "https://rpc-mumbai.maticvigil.com/"
           }
         }
       ],
@@ -100,7 +100,7 @@
           "driver": "POLYGON_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/gas/polygon/",
-            "proposal_endpoint": "https://api.coingrig.com/web3test/polygon/"
+            "proposal_endpoint": "https://rpc-mumbai.maticvigil.com/"
           }
         }
       ],
@@ -108,7 +108,7 @@
         {
           "driver": "POLYGON_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/web3test/polygon/"           
+            "endpoint": "https://rpc-mumbai.maticvigil.com/"           
           }
         }
       ]
