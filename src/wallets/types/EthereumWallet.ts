@@ -7,6 +7,7 @@ import Web3 from 'web3';
 import { ERC20_ABI } from '../../constants';
 import { CONFIG } from '../../utils/config';
 import BigNumber from 'bignumber.js';
+import { Web3SigningManager } from '../signing/web3';
 
 export class EthereumWallet extends GenericWallet {
   TRANSACTION_DRIVER_NAMESPACE: {
@@ -43,6 +44,15 @@ export class EthereumWallet extends GenericWallet {
     );
     const client = new Web3(provider);
     return client;
+  }
+
+  getSigningManager() {
+    if (this.signingManager) {
+      return this.signingManager;
+    }
+    // Create the signing manager
+    this.signingManager = new Web3SigningManager(this.getWeb3Client(), this.getPrivateKey());
+    return this.signingManager;
   }
 
   getDecimals = async (): Promise<number | null> => {
