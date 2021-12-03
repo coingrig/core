@@ -1,7 +1,6 @@
 import Web3 from 'web3';
 
 export class Web3SigningManager {
-
   client: Web3;
 
   constructor(client: any, privateKey: any) {
@@ -10,11 +9,15 @@ export class Web3SigningManager {
     this.client.eth.defaultAccount = client.eth.accounts.wallet[0].address;
   }
 
-  async personalSign(dataToSign: any, password: string, address: string | null = null) {
+  async personalSign(
+    dataToSign: any,
+    password: string,
+    address: string | null = null
+  ) {
     if (!address) {
       address = this.client.eth.defaultAccount!;
     }
-    return await this.client.eth.personal.sign(dataToSign, address, password);    
+    return await this.client.eth.personal.sign(dataToSign, address, password);
   }
 
   async sign(dataToSign: any, address: string | null = null) {

@@ -51,7 +51,10 @@ export class EthereumWallet extends GenericWallet {
       return this.signingManager;
     }
     // Create the signing manager
-    this.signingManager = new Web3SigningManager(this.getWeb3Client(), this.getPrivateKey());
+    this.signingManager = new Web3SigningManager(
+      this.getWeb3Client(),
+      this.getPrivateKey()
+    );
     return this.signingManager;
   }
 

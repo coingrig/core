@@ -6,7 +6,7 @@ export class WEB3_Driver extends GenericTransactionDriver {
   send = async (transaction: GenericTxProposal): Promise<any> => {
     const data: any = transaction.getData();
     let txRaw = await this.prepareSignedTransaction(data);
-    return this.sendRaw(txRaw);    
+    return this.sendRaw(txRaw);
   };
 
   sendRaw = async (transaction: any): Promise<any> => {
@@ -38,7 +38,7 @@ export class WEB3_Driver extends GenericTransactionDriver {
         });
     });
     return p;
-  }
+  };
 
   prepareSignedTransaction = async (data: any) => {
     const provider = new Web3.providers.HttpProvider(this.getEndpoint());
