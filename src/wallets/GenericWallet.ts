@@ -3,6 +3,7 @@ import { GenericTxProposal } from '../fees/GenericTxProposal';
 import { IWalletConfig } from './IWalletConfig';
 import { CONFIG } from '../utils/config';
 import { GenericBalance } from '../balances/GenericBalance';
+import { Web3SigningManager } from './signing/web3';
 
 /**
  * Don't use the generic wallet, for a new coin write an implementation
@@ -11,6 +12,7 @@ export class GenericWallet implements IWallet {
   config: IWalletConfig;
   address: any = null;
   currency: string | null;
+  signingManager: Web3SigningManager | null = null;
 
   TRANSACTION_DRIVER_NAMESPACE: {
     [key: string]: any;
@@ -29,6 +31,7 @@ export class GenericWallet implements IWallet {
     this.address = config.walletAddress;
     this.config = config;
     this.currency = this.config.symbol;
+    this.signingManager = null;
   }
   //
   getDecimals = async (): Promise<number | null> => {
@@ -67,6 +70,9 @@ export class GenericWallet implements IWallet {
     }
     return this.config.chain;
   };
+  getSigningManager() {
+    return this.signingManager;
+  }
   // End of common functions
   getBalance = async () => {
     // Loop through the drivers to get the balance
@@ -139,6 +145,29 @@ export class GenericWallet implements IWallet {
           driverDescription.driver
         ](this.config, driverDescription.config);
         let tx = await driver.send(transactionProposal);
+        return tx;
+      } catch (e) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(e);
+        }
+        continue;
+      }
+    }
+    return null;
+  };
+
+  postRawTxSend = async (transaction: any): Promise<any> => {
+    // Loop through the drivers to get the fees
+    let drivers =
+      CONFIG.CHAIN_ENDPOINTS[this.getBlockchainSymbol()]?.transaction ?? [];
+    for (let i = 0; i < drivers.length; i++) {
+      // Try all drivers in case one of them fails
+      const driverDescription: any = drivers[i];
+      try {
+        var driver = new this.TRANSACTION_DRIVER_NAMESPACE[
+          driverDescription.driver
+        ](this.config, driverDescription.config);
+        let tx = await driver.sendRaw(transaction);
         return tx;
       } catch (e) {
         if (process.env.NODE_ENV !== 'production') {

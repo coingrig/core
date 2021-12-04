@@ -8,7 +8,7 @@ import { CONFIG } from '../../utils/config';
 export class BTC_Driver extends GenericTransactionDriver {
   send = async (transaction: GenericTxProposal) => {
     let txData = await this.prepareSignedTransaction(transaction.getData());
-    return this.sendTx(txData);
+    return this.sendRaw(txData);
   };
 
   prepareSignedTransaction = async (body: any) => {
@@ -75,8 +75,8 @@ export class BTC_Driver extends GenericTransactionDriver {
     }
   };
 
-  sendTx = async (txData: any) => {
-    const url = this.getTransactionSendEndpoint() + txData;
+  sendRaw = async (transaction: any): Promise<any> => {
+    const url = this.getTransactionSendEndpoint() + transaction;
     // console.log(url);
     const params: object = {
       method: 'get',

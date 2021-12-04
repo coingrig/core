@@ -13,4 +13,7 @@ export class GenericTransactionDriver {
   send = async (_transaction: GenericTxProposal): Promise<any> => {
     return null;
   };
+  sendRaw = async (_transaction: any): Promise<any> => {
+    return null;
+  };
 }
