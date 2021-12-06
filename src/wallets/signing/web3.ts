@@ -1,10 +1,6 @@
 import Web3 from 'web3';
-import {
-  signTypedData,
-} from 'eth-sig-util';
-import {      
-  toBuffer,
-} from 'ethereumjs-util';
+import { signTypedData } from 'eth-sig-util';
+import { toBuffer } from 'ethereumjs-util';
 export class Web3SigningManager {
   client: Web3;
   privateKey: string;
@@ -28,7 +24,7 @@ export class Web3SigningManager {
   }
 
   async sign(dataToSign: any) {
-    return (this.client.eth.accounts.sign(dataToSign, this.privateKey)).signature;
+    return this.client.eth.accounts.sign(dataToSign, this.privateKey).signature;
   }
 
   async signTypedData(dataToSign: any) {

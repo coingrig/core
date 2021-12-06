@@ -10,7 +10,7 @@ export class WEB3_Driver extends GenericTransactionDriver {
   };
 
   sendRaw = async (transaction: any): Promise<any> => {
-    const provider = new Web3.providers.HttpProvider(this.getEndpoint());    
+    const provider = new Web3.providers.HttpProvider(this.getEndpoint());
     const client = new Web3(provider);
 
     let p = new Promise((resolve, reject) => {
