@@ -1,5 +1,8 @@
 import Web3 from 'web3';
-import { signTypedData } from '@metamask/eth-sig-util';
+import {
+  signTypedData as web3SignTypeData,
+  SignTypedDataVersion,
+} from '@metamask/eth-sig-util';
 import { toBuffer } from 'ethereumjs-util';
 export class Web3SigningManager {
   client: Web3;
@@ -32,7 +35,11 @@ export class Web3SigningManager {
     let privateKeyBuffer = toBuffer(this.privateKey);
     // console.log('privateKeyBuffer', privateKeyBuffer);
     // console.log('dataToSign', dataToSign);
-    let sig = signTypedData(privateKeyBuffer, dataToSign);
+    let sig = web3SignTypeData({
+      privateKey: privateKeyBuffer,
+      data: dataToSign,
+      version: SignTypedDataVersion.V3,
+    });
     // console.log('sig', sig);
     return sig;
     // return (this.client.eth.accounts.sign(dataToSign, this.privateKey)).signature;
