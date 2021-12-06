@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { signTypedData } from 'eth-sig-util';
+import { signTypedData } from '@metamask/eth-sig-util';
 import { toBuffer } from 'ethereumjs-util';
 export class Web3SigningManager {
   client: Web3;
