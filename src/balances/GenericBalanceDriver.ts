@@ -1,12 +1,11 @@
 import { IBalanceDriver } from './IBalance';
 import { GenericBalance } from './GenericBalance';
-import { IWalletConfig } from '../wallets/IWalletConfig';
 
 export class GenericBalanceDriver implements IBalanceDriver {
   currency: string;
-  assetConfig: IWalletConfig;
+  assetConfig: any;
   config: any;
-  constructor(assetConfig: IWalletConfig, config?: any) {
+  constructor(assetConfig: any, config?: any) {
     this.config = config;
     this.assetConfig = assetConfig;
     this.currency = assetConfig.symbol;

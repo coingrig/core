@@ -7,6 +7,7 @@ import Web3 from 'web3';
 import { ERC20_ABI } from '../../constants';
 import { CONFIG } from '../../utils/config';
 import BigNumber from 'bignumber.js';
+import { Web3SigningManager } from '../signing/web3';
 
 export class EthereumWallet extends GenericWallet {
   TRANSACTION_DRIVER_NAMESPACE: {
@@ -26,6 +27,37 @@ export class EthereumWallet extends GenericWallet {
   } = {
     ETH_Driver: ETH_Balance_Driver,
   };
+
+  getWeb3Client() {
+    let drivers =
+      CONFIG.CHAIN_ENDPOINTS[this.getBlockchainSymbol()]?.balance ?? [];
+    if (drivers.length === 0) {
+      throw new Error('Can not retrieve decimals without a balance driver!');
+    }
+    let driverDescription = drivers[0];
+    let driver = new this.BALANCE_DRIVER_NAMESPACE[driverDescription.driver](
+      this.config,
+      driverDescription.config
+    );
+    const provider = new Web3.providers.HttpProvider(
+      driver.getTokenBalanceEndpoint()
+    );
+    const client = new Web3(provider);
+    return client;
+  }
+
+  getSigningManager() {
+    if (this.signingManager) {
+      return this.signingManager;
+    }
+    // Create the signing manager
+    this.signingManager = new Web3SigningManager(
+      this.getWeb3Client(),
+      this.getPrivateKey()
+    );
+    return this.signingManager;
+  }
+
   getDecimals = async (): Promise<number | null> => {
     if (this.config.decimals === null) {
       // Retrieve decimals information
@@ -34,34 +66,50 @@ export class EthereumWallet extends GenericWallet {
           'Wallet decimals not set, can not retrieve them without contract address!'
         );
       }
-
-      let drivers =
-        CONFIG.CHAIN_ENDPOINTS[this.getBlockchainSymbol()]?.balance ?? [];
-      if (drivers.length === 0) {
-        throw new Error('Can not retrieve decimals without a balance driver!');
-      }
-      let driverDescription = drivers[0];
-      let driver = new this.BALANCE_DRIVER_NAMESPACE[driverDescription.driver](
-        this.config,
-        driverDescription.config
-      );
-
-      const provider = new Web3.providers.HttpProvider(
-        driver.getTokenBalanceEndpoint()
-      );
-      const client = new Web3(provider);
-
+      const client = this.getWeb3Client();
       // The minimum ABI required to get the ERC20 Token balance
       const minABI: any = ERC20_ABI;
-
       const contract = new client.eth.Contract(minABI, this.config.contract!);
-
       const result = await contract.methods.decimals().call();
-
       const decimals = Number(new BigNumber(result));
-
       this.config.decimals = decimals;
     }
     return this.config.decimals;
+  };
+
+  getCurrencySymbol = async (): Promise<string | null> => {
+    if (this.config.symbol === null) {
+      // Retrieve decimals information
+      if (!this.config.contract) {
+        throw new Error(
+          'Wallet decimals not set, can not retrieve them without contract address!'
+        );
+      }
+      const client = this.getWeb3Client();
+      // The minimum ABI required to get the ERC20 Token balance
+      const minABI: any = ERC20_ABI;
+      const contract = new client.eth.Contract(minABI, this.config.contract!);
+      const result = await contract.methods.symbol().call();
+      this.config.symbol = result;
+    }
+    return this.config.symbol;
+  };
+
+  getCurrencyName = async (): Promise<string | null> => {
+    if (this.config.name === null) {
+      // Retrieve decimals information
+      if (!this.config.contract) {
+        throw new Error(
+          'Wallet decimals not set, can not retrieve them without contract address!'
+        );
+      }
+      const client = this.getWeb3Client();
+      // The minimum ABI required to get the ERC20 Token balance
+      const minABI: any = ERC20_ABI;
+      const contract = new client.eth.Contract(minABI, this.config.contract!);
+      const result = await contract.methods.name().call();
+      this.config.name = result;
+    }
+    return this.config.name;
   };
 }
