@@ -1,14 +1,14 @@
 import { GenericTransactionDriver } from '../GenericTransactionDriver';
 import { GenericTxProposal } from '../../fees/GenericTxProposal';
 import axios from 'axios';
-import { UA } from '../../constants';
+import { GENERIC_REQUEST_THROTTLE_DELAY, UA } from '../../constants';
 import { ECPair, networks, Psbt } from 'bitcoinjs-lib';
 import { CONFIG } from '../../utils/config';
 
 export class BTC_Driver extends GenericTransactionDriver {
   send = async (transaction: GenericTxProposal) => {
     let txData = await this.prepareSignedTransaction(transaction.getData());
-    return this.sendRaw(txData);
+    return await this.sendRaw(txData);
   };
 
   prepareSignedTransaction = async (body: any) => {
@@ -54,61 +54,82 @@ export class BTC_Driver extends GenericTransactionDriver {
   };
 
   getTxs = async (tx: string) => {
-    const url = this.getTransactionInfoEndpoint() + tx;
-    // console.log(url);
-
-    const params: object = {
-      method: 'get',
-      url: url,
-      headers: {
-        'User-Agent': UA,
-      },
-    };
-    try {
-      const response = await axios(params);
-      return response.data;
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log(error);
+    let endpoints = this.getTransactionInfoEndpoint();
+    for (let i = 0; i < endpoints.length; i++) {
+      let endpoint = endpoints[i];
+      const url = endpoint + tx;
+      const params: object = {
+        method: 'get',
+        url: url,
+        headers: {
+          'User-Agent': UA,
+        },
+      };
+      try {
+        const response = await axios(params);
+        return response.data;
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(error);
+        }
       }
-      return false;
+      await new Promise(resolve =>
+        setTimeout(resolve, GENERIC_REQUEST_THROTTLE_DELAY)
+      );
     }
+    return false;
   };
 
   sendRaw = async (transaction: any): Promise<any> => {
-    const url = this.getTransactionSendEndpoint() + transaction;
-    // console.log(url);
-    const params: object = {
-      method: 'get',
-      url: url,
-      headers: {
-        'User-Agent': UA,
-      },
-    };
-    try {
-      const response = await axios(params);
-      return response.data.result;
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log(error);
+    let endpoints = this.getTransactionSendEndpoint();
+    for (let i = 0; i < endpoints.length; i++) {
+      let endpoint = endpoints[i];
+      const url = endpoint + transaction;
+      const params: object = {
+        method: 'get',
+        url: url,
+        headers: {
+          'User-Agent': UA,
+        },
+      };
+      try {
+        const response = await axios(params);
+        return response.data.result;
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('response.data', error);
+        }
       }
-      return false;
+      await new Promise(resolve =>
+        setTimeout(resolve, GENERIC_REQUEST_THROTTLE_DELAY)
+      );
     }
+    return false;
   };
 
   getTransactionSendEndpoint() {
-    const endpoint = this.config.send_endpoint;
-    if (endpoint) {
-      return endpoint;
+    let endpoints = [];
+    if (this.config.send_endpoint) {
+      if (!Array.isArray(this.config.send_endpoint)) {
+        endpoints = [this.config.send_endpoint];
+      } else {
+        endpoints = this.config.send_endpoint;
+      }
+      return endpoints;
     }
     throw new Error(
       this.currency + ' Transaction endpoint is required in config'
     );
   }
   getTransactionInfoEndpoint() {
-    const endpoint = this.config.get_endpoint;
-    if (endpoint) {
-      return endpoint;
+    let endpoints = [];
+    if (this.config.send_endpoint) {
+      if (!Array.isArray(this.config.get_endpoint)) {
+        endpoints = [this.config.get_endpoint];
+      } else {
+        endpoints = this.config.get_endpoint;
+      }
+      return endpoints;
     }
     throw new Error(
       this.currency + ' Transaction endpoint is required in config'

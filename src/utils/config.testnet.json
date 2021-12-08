@@ -34,7 +34,11 @@
         {
           "driver": "BTC_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/tbtc/address/"
+            "endpoint": [
+              "https://tbtc1.trezorzz.io/api/v2/address/",
+              "https://tbtc2.trezor.io/api/v2/address/",
+              "https://api.coingrig.com/tbtc/address/"
+            ]
           }
         }
       ],
@@ -43,7 +47,11 @@
           "driver": "BTC_Driver",
           "config": {
             "endpoint": "https://api.blockchain.info/mempool/fees",
-            "utxo_endpoint": "https://api.coingrig.com/tbtc/utxo/"
+            "utxo_endpoint": [
+              "https://tbtc1.trezorzz.io/api/v2/utxo/",
+              "https://tbtc2.trezor.io/api/v2/utxo/",
+              "https://api.coingrig.com/tbtc/utxo/"
+            ]
           }
         }
       ],
@@ -51,8 +59,16 @@
         {
           "driver": "BTC_Driver",
           "config": {
-            "get_endpoint": "https://api.coingrig.com/tbtc/tx/",
-            "send_endpoint": "https://api.coingrig.com/tbtc/sendtx/",
+            "get_endpoint": [
+              "https://tbtc1.trezorzz.io/api/v2/tx/",
+              "https://tbtc2.trezor.io/api/v2/tx/",
+              "https://api.coingrig.com/tbtc/tx/"
+            ],
+            "send_endpoint": [
+              "https://tbtc1.trezorzz.io/api/v2/sendtx/",
+              "https://tbtc2.trezor.io/api/v2/sendtx/",
+              "https://api.coingrig.com/tbtc/sendtx/"
+            ],
             "TESTNET": true
           }
         }

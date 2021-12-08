@@ -3,30 +3,45 @@ import { GenericDriver } from '../GenericDriver';
 import { BitcoinFee } from '../types/BitcoinFee';
 import axios from 'axios';
 
-import { UA } from '../../constants';
+import { GENERIC_REQUEST_THROTTLE_DELAY, UA } from '../../constants';
 import { btc_to_satoshi, satoshi_to_btc } from '../../currencyFunctions';
 
 let coinSelect = require('coinselect');
 
 export class BTC_Driver extends GenericDriver {
   getUTXOEndpoint() {
-    const endpoint = this.config.utxo_endpoint;
-    if (endpoint) {
-      return endpoint;
+    let endpoints = [];
+    if (this.config.utxo_endpoint) {
+      if (!Array.isArray(this.config.utxo_endpoint)) {
+        endpoints = [this.config.utxo_endpoint];
+      } else {
+        endpoints = this.config.utxo_endpoint;
+      }
+      return endpoints;
     }
-    throw new Error('BTC UTXO endpoint is required in config[other] section');
+    throw new Error('BTC UTXO endpoint is required in config section');
   }
   getUTXO = async (address: string) => {
-    const url = this.getUTXOEndpoint() + address + '?confirmed=false';
-    const param: object = {
-      method: 'get',
-      url: url,
-      headers: {
-        'User-Agent': UA,
-      },
-    };
-    const response = await axios(param);
-    return response.data;
+    let endpoints = this.getUTXOEndpoint();
+    for (let i = 0; i < endpoints.length; i++) {
+      let endpoint = endpoints[i];
+      const url = endpoint + address + '?confirmed=false';
+      const param: object = {
+        method: 'get',
+        url: url,
+        headers: {
+          'User-Agent': UA,
+        },
+      };
+      try {
+        const response = await axios(param);
+        return response.data;
+      } catch (e) {}
+      await new Promise(resolve =>
+        setTimeout(resolve, GENERIC_REQUEST_THROTTLE_DELAY)
+      );
+    }
+    throw new Error('Unable to retrieve UTXO information!');
   };
   getTxSendProposals = async (destination: string, valueToSend: number) => {
     const fromAddress = this.assetConfig.walletAddress!;
