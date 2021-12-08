@@ -1,7 +1,9 @@
 import { IWalletConfig, WalletFactory } from '../dist';
 import { WalletGenerator } from '../dist';
 import { Chains } from '../dist';
-import { BTC_ADDRESS_RECEIVER, BTC_ADDRESS_SENDER, MNEMONIC } from './fixtures';
+import { MNEMONIC } from './fixtures';
+import { BTC_ADDRESS_SENDER } from './fixtures';
+import { BTC_ADDRESS_RECEIVER } from './fixtures';
 
 let config: IWalletConfig = {
   symbol: 'BTC',
@@ -99,7 +101,7 @@ describe('BitcoinWallet', () => {
     let w = WalletFactory.getWallet(_config);
     let balance = await w.getBalance();
     expect(balance.getValue()).toBeGreaterThan(0);
-    let proposals = await w.getTxSendProposals(to, 0.0001);
+    let proposals = await w.getTxSendProposals(to, 0.00002);
     expect(typeof proposals).toBe('object');
     let result = await w.postTxSend(proposals.regular);
     console.log('result', result);

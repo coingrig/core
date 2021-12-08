@@ -19,8 +19,7 @@ let config: IWalletConfig = {
 
 describe('BscWallet', () => {
   it('can_get_balance', async () => {
-    let mnemonic =
-      'mouse initial knife crystal rookie link occur consider debris fashion spice cash';
+    let mnemonic = MNEMONIC;
     let xpub = await WalletGenerator.generateWalletXpub(Chains.BSC, mnemonic);
     let address = await WalletGenerator.generateAddressFromXPub(
       Chains.BSC,
