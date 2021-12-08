@@ -91,7 +91,7 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/eth/address/",
+            "endpoint": "https://eth1.trezor.io/api/v2/address/",
             "token_endpoint": "https://api.coingrig.com/web3/eth/"
           }
         }
