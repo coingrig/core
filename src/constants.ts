@@ -1,5 +1,7 @@
 import { Currency } from './currencies';
 
+export const GENERIC_REQUEST_THROTTLE_DELAY = 250;
+
 export const SATOSHI = 100000000;
 export const UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_5_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36';

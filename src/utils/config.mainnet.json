@@ -34,7 +34,14 @@
         {
           "driver": "BTC_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/btc/address/"
+            "endpoint": [
+              "https://btc1.trezor.io/api/v2/address/",
+              "https://btc2.trezor.io/api/v2/address/",
+              "https://btc3.trezor.io/api/v2/address/",
+              "https://btc4.trezor.io/api/v2/address/",
+              "https://btc5.trezor.io/api/v2/address/",
+              "https://api.coingrig.com/btc/address/"
+            ]
           }
         }
       ],
@@ -43,7 +50,14 @@
           "driver": "BTC_Driver",
           "config": {
             "endpoint": "https://api.blockchain.info/mempool/fees",
-            "utxo_endpoint": "https://api.coingrig.com/btc/utxo/"
+            "utxo_endpoint": [
+              "https://btc1.trezor.io/api/v2/utxo/",
+              "https://btc2.trezor.io/api/v2/utxo/",
+              "https://btc3.trezor.io/api/v2/utxo/",
+              "https://btc4.trezor.io/api/v2/utxo/",
+              "https://btc5.trezor.io/api/v2/utxo/",
+              "https://api.coingrig.com/btc/utxo/"
+            ]
           }
         }
       ],
@@ -51,8 +65,22 @@
         {
           "driver": "BTC_Driver",
           "config": {
-            "get_endpoint": "https://api.coingrig.com/btc/tx/",
-            "send_endpoint": "https://api.coingrig.com/btc/sendtx/",
+            "get_endpoint": [
+              "https://btc1.trezor.io/api/v2/tx/",
+              "https://btc2.trezor.io/api/v2/tx/",
+              "https://btc3.trezor.io/api/v2/tx/",
+              "https://btc4.trezor.io/api/v2/tx/",
+              "https://btc5.trezor.io/api/v2/tx/",
+              "https://api.coingrig.com/btc/tx/"
+            ],
+            "send_endpoint": [
+              "https://btc1.trezor.io/api/v2/sendtx/",
+              "https://btc2.trezor.io/api/v2/sendtx/",
+              "https://btc3.trezor.io/api/v2/sendtx/",
+              "https://btc4.trezor.io/api/v2/sendtx/",
+              "https://btc5.trezor.io/api/v2/sendtx/",
+              "https://api.coingrig.com/btc/sendtx/"
+            ],
             "TESTNET": false
           }
         }
@@ -63,7 +91,7 @@
         {
           "driver": "ETH_Driver",
           "config": {
-            "endpoint": "https://api.coingrig.com/eth/address/",
+            "endpoint": "https://eth1.trezor.io/api/v2/address/",
             "token_endpoint": "https://api.coingrig.com/web3/eth/"
           }
         }
