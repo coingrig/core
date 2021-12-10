@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## 1.3.1
+
+Features:
+
+- Allow list of endpoints instead of one endpoint for BTC connectors
+
 ## 1.3.0
 
 Features:
