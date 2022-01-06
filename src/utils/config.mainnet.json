@@ -119,7 +119,7 @@
         {
           "driver": "POLYGON_Driver",
           "config": {
-            "endpoint": "https://rpc-mainnet.maticvigil.com/"
+            "endpoint": "https://polygon-rpc.com/"
           }
         }
       ],
@@ -128,7 +128,7 @@
           "driver": "POLYGON_Driver",
           "config": {
             "endpoint": "https://api.coingrig.com/gas/polygon/",
-            "proposal_endpoint": "https://rpc-mainnet.maticvigil.com/"
+            "proposal_endpoint": "https://polygon-rpc.com/"
           }
         }
       ],
@@ -136,7 +136,7 @@
         {
           "driver": "POLYGON_Driver",
           "config": {
-            "endpoint": "https://rpc-mainnet.maticvigil.com/"           
+            "endpoint": "https://polygon-rpc.com/"
           }
         }
       ]
